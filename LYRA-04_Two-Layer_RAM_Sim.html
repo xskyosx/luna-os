@@ -1,0 +1,70 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LYRA-04 — Two-Layer RAM</title>
+<style>
+body{margin:0;background:#080b13;color:#eee;font-family:system-ui,sans-serif}main{max-width:950px;margin:auto;padding:18px}
+.card{background:#121727;border:1px solid #303952;border-radius:14px;padding:14px;margin:12px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}
+.big{font-size:34px;font-weight:700}.small{opacity:.72;font-size:13px}
+button{padding:10px 13px;margin:4px;border-radius:9px;border:1px solid #46516f;background:#202943;color:white}
+canvas{width:100%;height:250px;background:#070910;border-radius:10px}
+.good{font-weight:700}.warn{font-weight:700}
+</style></head>
+<body><main>
+<h1>LYRA-04 — Two-Layer RAM</h1>
+<div class="small">Conscious / Subconscious are simulation labels for two independent memory layers.</div>
+
+<div class="grid">
+<div class="card"><div class="small">CONSCIOUS RAM</div><div id="c" class="big">0</div></div>
+<div class="card"><div class="small">SUBCONSCIOUS RAM</div><div id="s" class="big">0</div></div>
+<div class="card"><div class="small">COMBINED STATE</div><div id="sum" class="big">0</div></div>
+<div class="card"><div class="small">EQUAL / OPPOSITE BALANCE</div><div id="balance" class="big">0</div></div>
+</div>
+
+<div class="card">
+<h3>Layer controls</h3>
+<button onclick="setC(1)">C +1</button><button onclick="setC(-1)">C −1</button>
+<button onclick="setS(1)">S +1</button><button onclick="setS(-1)">S −1</button>
+<button onclick="mirror()">EQUAL & OPPOSITE</button><button onclick="chaos()">CHAOS</button>
+<button onclick="resetSim()">RESET</button>
+</div>
+
+<div class="card"><h3>Observer trace</h3><canvas id="plot" width="950" height="250"></canvas>
+<div class="small">C = conscious-layer signal. S = subconscious-layer signal. The mirror operation sets S = −C in the model, producing zero net sum while preserving information in both layers.</div></div>
+
+<div class="card">
+<h3>Memory rule</h3>
+<p><b>Two layers, one address space:</b> each address stores a pair <code>(C,S)</code>.</p>
+<p><b>Equal and opposite:</b> <code>S = −C</code> → combined effect <code>C + S = 0</code>.</p>
+<p><b>Important:</b> this is a computational analogy, not a claim about the biological subconscious or brain RAM.</p>
+</div>
+</main>
+<script>
+let C=0,S=0,noise=0,history=[];
+function clamp(x){return Math.max(-9,Math.min(9,x))}
+function record(){history.push([C,S]);if(history.length>120)history.shift();render();draw()}
+function setC(x){C=clamp(C+x);record()}
+function setS(x){S=clamp(S+x);record()}
+function mirror(){S=-C;record()}
+function chaos(){noise=3; C=clamp(C+(Math.random()-.5)*noise);S=clamp(S+(Math.random()-.5)*noise);record();setTimeout(()=>noise=0,700)}
+function resetSim(){C=0;S=0;history=[];for(let i=0;i<5;i++)record()}
+function render(){
+ document.getElementById("c").textContent=C;
+ document.getElementById("s").textContent=S;
+ document.getElementById("sum").textContent=C+S;
+ document.getElementById("balance").textContent=(C+S===0)?"BALANCED":"OFFSET "+(C+S);
+}
+function draw(){
+ let cv=document.getElementById("plot"),x=cv.getContext("2d"),w=cv.width,h=cv.height;
+ x.clearRect(0,0,w,h);x.strokeStyle="#29314a";x.lineWidth=1;
+ for(let i=1;i<6;i++){let y=i*h/6;x.beginPath();x.moveTo(0,y);x.lineTo(w,y);x.stroke()}
+ function line(k,off){
+   x.beginPath();x.lineWidth=2;
+   history.forEach((p,i)=>{let xx=10+i*(w-20)/119, yy=off-p[k]*10;i?x.lineTo(xx,yy):x.moveTo(xx,yy)});
+   x.stroke()
+ }
+ line(0,h/2);line(1,h/2);
+ x.fillStyle="#aaa";x.font="14px system-ui";x.fillText("C / conscious",10,18);x.fillText("S / subconscious",10,h-10)
+}
+resetSim();
+</script></body></html>

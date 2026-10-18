@@ -1,0 +1,13 @@
+Aurora XLIII — Convergence Hunt
+Experiment: AXLIII-CONVERGENCE-HUNT
+
+Design: 81 parameter cells × 128 replicates = 10368 paired trajectories.
+Parameters: coupling, K2 strength, memory retention, rebirth intensity.
+Intervention: rebirth at step 6; divergence followed for 36 steps.
+
+Verdict: BOUNDARY MAPPED
+Best reconvergence cell: {'coupling': 0.02, 'k2': 0.08, 'memory': 0.25, 'rebirth_intensity': 0.25, 'peak': 0.12571528504887783, 'final': 0.007491203621550184, 'auc': 1.12326626111992, 'recon_rate': 0.78125, 'regime': 'reconvergent'}
+Strongest persistent cell: {'coupling': 0.14, 'k2': 0.03, 'memory': 0.95, 'rebirth_intensity': 0.95, 'peak': 0.7614120768357913, 'final': 0.6441858318623076, 'auc': 17.795314726919973, 'recon_rate': 0.1328125, 'regime': 'persistent'}
+Mixed cells: 25
+
+Interpretation: This is a property of Aurora's abstract dynamical system, not evidence about physical quantum/subatomic behavior. A mixed cell is treated as a transition region, not a physical phase transition.

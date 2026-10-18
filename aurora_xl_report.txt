@@ -1,0 +1,20 @@
+Aurora XL — Baseline Identity Chamber
+
+Replicates: 384
+original: post_intersection=0.157114, delta=-0.038102, disagreement=0.252034
+surrogate: post_intersection=0.162534, delta=-0.033830, disagreement=0.263240
+randomized: post_intersection=0.214614, delta=0.049565, disagreement=0.258020
+
+Paired contrasts (original minus alternative):
+original_minus_surrogate_intersection_delta: mean=-0.004271, sd=0.058202, positive_rate=0.492
+original_minus_randomized_intersection_delta: mean=-0.087666, sd=0.073137, positive_rate=0.130
+original_minus_surrogate_post_intersection: mean=-0.005420, sd=0.029906, positive_rate=0.404
+original_minus_randomized_post_intersection: mean=-0.057500, sd=0.039951, positive_rate=0.081
+original_minus_surrogate_max_intersection_jump: mean=0.013196, sd=0.098800, positive_rate=0.544
+original_minus_randomized_max_intersection_jump: mean=-0.017410, sd=0.095346, positive_rate=0.404
+
+Stranger events (>0.15 advantage): 0
+
+Node 9: BASELINE IDENTITY SIGNAL NOT YET ESTABLISHED
+
+This is a toy dynamical-system test; it does not establish claims about physical quantum systems.

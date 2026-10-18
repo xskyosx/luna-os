@@ -1,0 +1,19 @@
+Aurora XXXIX — Memory Trial
+
+Replicates per condition: 512
+Conditions: memory preserved, memory erased, memory replaced
+
+Mean observer-intersection proxy:
+  memory_preserved: 0.357707
+  memory_erased: 0.352357
+  memory_replaced: 0.351937
+
+Paired contrasts:
+  memory_erased_minus_memory_preserved: mean=-0.005350, sd=0.088990, positive_rate=0.477
+  memory_replaced_minus_memory_preserved: mean=-0.005770, sd=0.090792, positive_rate=0.480
+  memory_erased_minus_memory_replaced: mean=0.000419, sd=0.084846, positive_rate=0.492
+
+Permutation p (erased - preserved): 0.911272
+
+Interpretation:
+This is a toy dynamical-system test. It does not establish claims about physical quantum systems. The coded result tests whether history handling changes the observer proxy under matched perturbation.

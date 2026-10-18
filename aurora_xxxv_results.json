@@ -1,0 +1,25 @@
+{
+  "experiment": "AXXXV-REBIRTH-CHAMBER-35035",
+  "replicates": 256,
+  "paired_trials": 256,
+  "intervention": "cycle 4 phase 8; rebirth resets state, control continues without reset",
+  "recovery_cycles": [
+    5,
+    6,
+    7
+  ],
+  "agreement_rebirth_mean": 0.19828180337872447,
+  "agreement_control_mean": 0.17565728760701224,
+  "agreement_delta": 0.022624515771712244,
+  "permutation_p_one_sided": 0.0,
+  "recovery_distance_rebirth_mean": 0.5016902556669925,
+  "recovery_distance_control_mean": 0.0791102009364722,
+  "observer_deltas": {
+    "resonance": -0.021103269565013214,
+    "coherence": -0.03809318639424655,
+    "entropy": 0.001710596143431769,
+    "mirror": -0.05193018047492065
+  },
+  "verdict": "REBIRTH SIGNATURE DETECTED",
+  "scientific_note": "Computational dynamical-system result only; not evidence for new physical phenomena."
+}

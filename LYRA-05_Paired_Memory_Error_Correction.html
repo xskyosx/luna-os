@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LYRA-05 — Paired Memory + Error Correction</title>
+<style>
+body{margin:0;background:#080b13;color:#eee;font-family:system-ui,sans-serif}
+main{max-width:1000px;margin:auto;padding:18px}.card{background:#121727;border:1px solid #303952;border-radius:14px;padding:14px;margin:12px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.big{font-size:32px;font-weight:700}.small{font-size:13px;opacity:.72}
+button{padding:10px 13px;margin:4px;border-radius:9px;border:1px solid #46516f;background:#202943;color:white}
+canvas{width:100%;height:260px;background:#070910;border-radius:10px}
+.badge{font-weight:700}.ok{font-weight:700}.bad{font-weight:700}
+code{background:#0a0d17;padding:2px 5px;border-radius:5px}
+</style></head>
+<body><main>
+<h1>LYRA-05 — Paired Memory + Error Correction</h1>
+<div class="small">A computational memory-resilience experiment. C/S are two logical memory copies, not biological consciousness/subconscious mechanisms.</div>
+
+<div class="grid">
+<div class="card"><div class="small">ADDRESS</div><div id="addr" class="big">00</div></div>
+<div class="card"><div class="small">PRIMARY C</div><div id="c" class="big">0</div></div>
+<div class="card"><div class="small">MIRROR S</div><div id="s" class="big">0</div></div>
+<div class="card"><div class="small">CHECK</div><div id="check" class="big">0</div></div>
+<div class="card"><div class="small">STATUS</div><div id="status" class="badge ok">VERIFIED</div></div>
+</div>
+
+<div class="card">
+<h3>Memory operations</h3>
+<button onclick="writeNext()">WRITE NEXT</button>
+<button onclick="mirror()">SYNC PAIR</button>
+<button onclick="corruptC()">CORRUPT C</button>
+<button onclick="corruptS()">CORRUPT S</button>
+<button onclick="repair()">ERROR CORRECT</button>
+<button onclick="chaos()">CHAOS BURST</button>
+<button onclick="resetSim()">RESET</button>
+</div>
+
+<div class="card">
+<h3>How the correction works</h3>
+<p>Each address stores <code>(C,S)</code>. The pair carries a small checksum:</p>
+<p><code>CHECK = (C + S) mod 4</code></p>
+<p>For this demo, a disagreement between the pair and its stored checksum triggers <b>FAULT</b>. The repair routine restores the corrupted side from the verified partner when the evidence is unambiguous.</p>
+<div id="log" class="small"></div>
+</div>
+
+<div class="card">
+<h3>Memory map</h3>
+<canvas id="plot" width="1000" height="260"></canvas>
+<div class="small">Top trace = C. Bottom trace = S. A repair event is marked in the event log.</div>
+</div>
+
+<div class="card">
+<h3>Lantern recovery rule</h3>
+<p><b>VERIFY → ISOLATE → COMPARE → RESTORE → VERIFY AGAIN.</b></p>
+<p>The simulator never silently overwrites a conflicting pair.</p>
+</div>
+</main>
+
+<script>
+let addr=0, C=0, S=0, check=0, history=[], log=[];
+function mod4(x){return ((x%4)+4)%4}
+function save(){check=mod4(C+S); history.push([C,S,check]); if(history.length>100)history.shift(); render(); draw()}
+function writeNext(){addr=(addr+1)%16; C=addr%4; S=C; save(); addlog("WRITE address "+addr)}
+function mirror(){S=C;save();addlog("SYNC: mirror restored from primary")}
+function corruptC(){C=(C+1)%4; render();addlog("FAULT: primary C corrupted");checkFault()}
+function corruptS(){S=(S+2)%4; render();addlog("FAULT: mirror S corrupted");checkFault()}
+function checkFault(){
+ let expected=mod4(C+S);
+ let fault=expected!==check;
+ document.getElementById("status").textContent=fault?"FAULT / CHECKSUM MISMATCH":"VERIFIED";
+ document.getElementById("status").className="badge "+(fault?"bad":"ok");
+}
+function repair(){
+ if(C===S){save();addlog("NO REPAIR NEEDED: pair agrees");return}
+ // In this model, choose the value appearing in the paired copy.
+ // If both are distinct, the stored checksum is not enough to identify a unique original;
+ // therefore mark ambiguous rather than inventing a value.
+ let oldC=C,oldS=S;
+ if(mod4(oldC+oldS)!==check){
+   // Use a simple paired-copy consensus rule only when one side matches a known-good history entry.
+   let candidate=history.length?history[history.length-1]:null;
+   if(candidate && candidate[0]===oldS){C=oldS; save(); addlog("REPAIR: C restored from verified S");}
+   else if(candidate && candidate[1]===oldC){S=oldC; save(); addlog("REPAIR: S restored from verified C");}
+   else {addlog("REPAIR HOLD: evidence ambiguous; no silent overwrite")}
+ } else {addlog("CHECKSUM OK: no repair required")}
+}
+function chaos(){
+ let side=Math.random()<.5?"C":"S";
+ if(side==="C")C=Math.floor(Math.random()*4);else S=Math.floor(Math.random()*4);
+ render();checkFault();addlog("CHAOS: "+side+" disturbed")
+}
+function addlog(t){log.unshift(new Date().toLocaleTimeString()+" — "+t);log=log.slice(0,6);document.getElementById("log").innerHTML=log.join("<br>")}
+function render(){
+ document.getElementById("addr").textContent=addr.toString(16).padStart(2,"0");
+ document.getElementById("c").textContent=C;
+ document.getElementById("s").textContent=S;
+ document.getElementById("check").textContent=check;
+ checkFault();
+}
+function draw(){
+ let cv=document.getElementById("plot"),x=cv.getContext("2d"),w=cv.width,h=cv.height;
+ x.clearRect(0,0,w,h);x.strokeStyle="#29314a";x.lineWidth=1;
+ for(let i=1;i<5;i++){let y=i*h/5;x.beginPath();x.moveTo(0,y);x.lineTo(w,y);x.stroke()}
+ function line(k,off){x.beginPath();x.lineWidth=2;history.forEach((p,i)=>{let xx=10+i*(w-20)/99,yy=off-p[k]*25;i?x.lineTo(xx,yy):x.moveTo(xx,yy)});x.stroke()}
+ line(0,h*.42);line(1,h*.88);
+ x.fillStyle="#aaa";x.font="14px system-ui";x.fillText("C",10,18);x.fillText("S",10,h-10)
+}
+function resetSim(){addr=0;C=0;S=0;check=0;history=[];log=[];for(let i=0;i<8;i++)history.push([0,0,0]);addlog("SYSTEM READY");render();draw()}
+resetSim();
+</script></body></html>

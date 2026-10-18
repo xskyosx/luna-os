@@ -1,0 +1,185 @@
+{
+  "experiment": "AXXXVIII-MECHSEP-7B4A",
+  "seed": 38038,
+  "replicates_per_condition": 256,
+  "factors": [
+    "magnitude",
+    "direction",
+    "randomness",
+    "baseline_replacement",
+    "memory_destruction"
+  ],
+  "rows": [
+    {
+      "level": 0.25,
+      "mechanism": "matched_perturbation",
+      "mean_observer_shift": 0.08014109787687333,
+      "sd": 0.040835700960892764
+    },
+    {
+      "level": 0.25,
+      "mechanism": "magnitude",
+      "mean_observer_shift": 0.03219806420097495,
+      "sd": 0.014041201937586737
+    },
+    {
+      "level": 0.25,
+      "mechanism": "direction",
+      "mean_observer_shift": 0.06262543673354326,
+      "sd": 0.008196571911982229
+    },
+    {
+      "level": 0.25,
+      "mechanism": "randomness",
+      "mean_observer_shift": 0.038677354123108874,
+      "sd": 0.019542887294095933
+    },
+    {
+      "level": 0.25,
+      "mechanism": "baseline_replacement",
+      "mean_observer_shift": 0.0856305316760341,
+      "sd": 0.061200932881325776
+    },
+    {
+      "level": 0.25,
+      "mechanism": "memory_destruction",
+      "mean_observer_shift": 0.14210035287752973,
+      "sd": 0.06061371638593367
+    },
+    {
+      "level": 0.5,
+      "mechanism": "matched_perturbation",
+      "mean_observer_shift": 0.10247656656280131,
+      "sd": 0.04659471906931878
+    },
+    {
+      "level": 0.5,
+      "mechanism": "magnitude",
+      "mean_observer_shift": 0.06217034998059611,
+      "sd": 0.022179511341547407
+    },
+    {
+      "level": 0.5,
+      "mechanism": "direction",
+      "mean_observer_shift": 0.11816754034504647,
+      "sd": 0.020096209188177092
+    },
+    {
+      "level": 0.5,
+      "mechanism": "randomness",
+      "mean_observer_shift": 0.0741701420205352,
+      "sd": 0.03778380357468062
+    },
+    {
+      "level": 0.5,
+      "mechanism": "baseline_replacement",
+      "mean_observer_shift": 0.14794011523229372,
+      "sd": 0.07773520749533634
+    },
+    {
+      "level": 0.5,
+      "mechanism": "memory_destruction",
+      "mean_observer_shift": 0.11155291413252653,
+      "sd": 0.05594355970900761
+    },
+    {
+      "level": 0.75,
+      "mechanism": "matched_perturbation",
+      "mean_observer_shift": 0.1577124087221608,
+      "sd": 0.07876404733067137
+    },
+    {
+      "level": 0.75,
+      "mechanism": "magnitude",
+      "mean_observer_shift": 0.0850934774140496,
+      "sd": 0.03121418833303584
+    },
+    {
+      "level": 0.75,
+      "mechanism": "direction",
+      "mean_observer_shift": 0.15702724917245814,
+      "sd": 0.036645600698265356
+    },
+    {
+      "level": 0.75,
+      "mechanism": "randomness",
+      "mean_observer_shift": 0.1124863262566566,
+      "sd": 0.05311515745563624
+    },
+    {
+      "level": 0.75,
+      "mechanism": "baseline_replacement",
+      "mean_observer_shift": 0.20948626590657585,
+      "sd": 0.09911585164992331
+    },
+    {
+      "level": 0.75,
+      "mechanism": "memory_destruction",
+      "mean_observer_shift": 0.14924461350658516,
+      "sd": 0.06980436932463313
+    },
+    {
+      "level": 1.0,
+      "mechanism": "matched_perturbation",
+      "mean_observer_shift": 0.2536450969901029,
+      "sd": 0.11365557642518011
+    },
+    {
+      "level": 1.0,
+      "mechanism": "magnitude",
+      "mean_observer_shift": 0.11644949283222718,
+      "sd": 0.038851809424002924
+    },
+    {
+      "level": 1.0,
+      "mechanism": "direction",
+      "mean_observer_shift": 0.17870652590001576,
+      "sd": 0.0628244810526945
+    },
+    {
+      "level": 1.0,
+      "mechanism": "randomness",
+      "mean_observer_shift": 0.14955233127144554,
+      "sd": 0.07267365805589256
+    },
+    {
+      "level": 1.0,
+      "mechanism": "baseline_replacement",
+      "mean_observer_shift": 0.24812586684664717,
+      "sd": 0.10767123107780376
+    },
+    {
+      "level": 1.0,
+      "mechanism": "memory_destruction",
+      "mean_observer_shift": 0.2576381597984053,
+      "sd": 0.11615435334261393
+    }
+  ],
+  "ranking": [
+    {
+      "mechanism": "baseline_replacement",
+      "mean_across_levels": 0.1727956949153877
+    },
+    {
+      "mechanism": "memory_destruction",
+      "mean_across_levels": 0.1651340100787617
+    },
+    {
+      "mechanism": "matched_perturbation",
+      "mean_across_levels": 0.1484937925379846
+    },
+    {
+      "mechanism": "direction",
+      "mean_across_levels": 0.1291316880377659
+    },
+    {
+      "mechanism": "randomness",
+      "mean_across_levels": 0.09372153841793655
+    },
+    {
+      "mechanism": "magnitude",
+      "mean_across_levels": 0.07397784610696195
+    }
+  ],
+  "verdict": "MECHANISMS_SEPARATED_TOY_MODEL"
+}

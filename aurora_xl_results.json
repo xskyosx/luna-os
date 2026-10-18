@@ -1,0 +1,71 @@
+{
+  "experiment": "AXL-BASELINE-IDENTITY",
+  "seed": 41039,
+  "replicates": 384,
+  "steps": 90,
+  "conditions": {
+    "original": {
+      "intersection_mean": 0.17997490116521014,
+      "post_intersection": 0.15711399162505202,
+      "pre_intersection": 0.19521550752531558,
+      "intersection_delta": -0.03810151590026356,
+      "mean_disagreement": 0.25203366833273455,
+      "max_intersection_jump": 0.39671114232209737
+    },
+    "surrogate": {
+      "intersection_mean": 0.18283265709529756,
+      "post_intersection": 0.16253446213067,
+      "pre_intersection": 0.1963647870717159,
+      "intersection_delta": -0.03383032494104592,
+      "mean_disagreement": 0.2632395707934331,
+      "max_intersection_jump": 0.38351474719101125
+    },
+    "randomized": {
+      "intersection_mean": 0.18487502600915523,
+      "post_intersection": 0.2146137315334998,
+      "pre_intersection": 0.16504922232625885,
+      "intersection_delta": 0.04956450920724095,
+      "mean_disagreement": 0.25801997723400566,
+      "max_intersection_jump": 0.41412102059925093
+    }
+  },
+  "paired_contrasts": {
+    "original_minus_surrogate_intersection_delta": {
+      "mean": -0.004271190959217644,
+      "sd": 0.05820221237793228,
+      "positive_rate": 0.4921875
+    },
+    "original_minus_randomized_intersection_delta": {
+      "mean": -0.08766602510750451,
+      "sd": 0.07313701722065838,
+      "positive_rate": 0.13020833333333334
+    },
+    "original_minus_surrogate_post_intersection": {
+      "mean": -0.005420470505617977,
+      "sd": 0.029906043964877647,
+      "positive_rate": 0.4036458333333333
+    },
+    "original_minus_randomized_post_intersection": {
+      "mean": -0.057499739908447776,
+      "sd": 0.03995090641945741,
+      "positive_rate": 0.08072916666666667
+    },
+    "original_minus_surrogate_max_intersection_jump": {
+      "mean": 0.013196395131086143,
+      "sd": 0.09880048126985039,
+      "positive_rate": 0.5442708333333334
+    },
+    "original_minus_randomized_max_intersection_jump": {
+      "mean": -0.017409878277153554,
+      "sd": 0.0953455158242697,
+      "positive_rate": 0.4036458333333333
+    }
+  },
+  "stranger_events": [],
+  "stranger_count": 0,
+  "node9": {
+    "agreement": "compare all three baselines rather than collapse to one score",
+    "question": "Does baseline identity produce a reproducible transition signature beyond matched perturbation?",
+    "verdict": "BASELINE IDENTITY SIGNAL NOT YET ESTABLISHED"
+  }
+}

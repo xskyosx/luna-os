@@ -1,0 +1,14 @@
+Aurora XLIV — Boundary Walker
+Experiment: AXLIV-BOUNDARY-WALKER
+
+Probed 300 adaptive neighbors from 25 mixed-region seeds.
+Validated top 5 boundary candidates with 64 independent replicates each.
+
+params={'coupling': 0.02, 'k2': 0.13, 'memory': 0.6, 'rebirth_intensity': 0.1} mean_recon=0.4614 sd=0.0312
+params={'coupling': 0.14, 'k2': 0.03, 'memory': 0.25, 'rebirth_intensity': 0.1} mean_recon=0.5531 sd=0.0311
+params={'coupling': 0.14, 'k2': 0.13, 'memory': 0.6, 'rebirth_intensity': 0.1} mean_recon=0.3640 sd=0.0296
+params={'coupling': 0.02, 'k2': 0.03, 'memory': 0.6, 'rebirth_intensity': 0.1} mean_recon=0.4100 sd=0.0279
+params={'coupling': 0.14, 'k2': 0.08, 'memory': 0.6, 'rebirth_intensity': 0.1} mean_recon=0.3402 sd=0.0321
+
+Verdict: BOUNDARY REFINEMENT: STABLE 50-PERCENT CORRIDOR
+The boundary is a property of the abstract simulation and its chosen equations; it is not evidence of a physical phase transition.

@@ -1,0 +1,290 @@
+{
+  "experiment": "AXLIV-BOUNDARY-WALKER",
+  "design": {
+    "seed_regions": 25,
+    "candidate_probes": 300,
+    "validated_boundary_points": 5,
+    "validation_replicates_per_point": 64
+  },
+  "best_candidates": [
+    {
+      "params": {
+        "coupling": 0.02,
+        "k2": 0.13,
+        "memory": 0.6,
+        "rebirth_intensity": 0.1
+      },
+      "estimated_recon_rate": 0.4765625,
+      "model_probability": 0.45470948181750614,
+      "distance_from_half": 0.0234375
+    },
+    {
+      "params": {
+        "coupling": 0.14,
+        "k2": 0.03,
+        "memory": 0.25,
+        "rebirth_intensity": 0.1
+      },
+      "estimated_recon_rate": 0.53125,
+      "model_probability": 0.5537366588703883,
+      "distance_from_half": 0.03125
+    },
+    {
+      "params": {
+        "coupling": 0.14,
+        "k2": 0.13,
+        "memory": 0.6,
+        "rebirth_intensity": 0.1
+      },
+      "estimated_recon_rate": 0.3984375,
+      "model_probability": 0.36548863834418965,
+      "distance_from_half": 0.1015625
+    },
+    {
+      "params": {
+        "coupling": 0.02,
+        "k2": 0.03,
+        "memory": 0.6,
+        "rebirth_intensity": 0.1
+      },
+      "estimated_recon_rate": 0.39453125,
+      "model_probability": 0.4052926589311606,
+      "distance_from_half": 0.10546875
+    },
+    {
+      "params": {
+        "coupling": 0.14,
+        "k2": 0.08,
+        "memory": 0.6,
+        "rebirth_intensity": 0.1
+      },
+      "estimated_recon_rate": 0.390625,
+      "model_probability": 0.34120700935868653,
+      "distance_from_half": 0.109375
+    },
+    {
+      "params": {
+        "coupling": 0.14,
+        "k2": 0.08,
+        "memory": 0.1,
+        "rebirth_intensity": 0.25
+      },
+      "estimated_recon_rate": 0.375,
+      "model_probability": 0.3525338199171134,
+      "distance_from_half": 0.125
+    },
+    {
+      "params": {
+        "coupling": 0.14,
+        "k2": 0.13,
+        "memory": 0.1,
+        "rebirth_intensity": 0.25
+      },
+      "estimated_recon_rate": 0.375,
+      "model_probability": 0.37716003837865225,
+      "distance_from_half": 0.125
+    },
+    {
+      "params": {
+        "coupling": 0.14,
+        "k2": 0.13,
+        "memory": 0.25,
+        "rebirth_intensity": 0.1
+      },
+      "estimated_recon_rate": 0.625,
+      "model_probability": 0.6054867611143768,
+      "distance_from_half": 0.125
+    },
+    {
+      "params": {
+        "coupling": 0.02,
+        "k2": 0.08,
+        "memory": 0.6,
+        "rebirth_intensity": 0.1
+      },
+      "estimated_recon_rate": 0.34765625,
+      "model_probability": 0.4298262700173995,
+      "distance_from_half": 0.15234375
+    },
+    {
+      "params": {
+        "coupling": 0.14,
+        "k2": 0.08,
+        "memory": 0.25,
+        "rebirth_intensity": 0.1
+      },
+      "estimated_recon_rate": 0.65234375,
+      "model_probability": 0.5798310802812787,
+      "distance_from_half": 0.15234375
+    },
+    {
+      "params": {
+        "coupling": 0.14,
+        "k2": 0.13,
+        "memory": 0.25,
+        "rebirth_intensity": 0.25
+      },
+      "estimated_recon_rate": 0.328125,
+      "model_probability": 0.2846279231563351,
+      "distance_from_half": 0.171875
+    },
+    {
+      "params": {
+        "coupling": 0.14,
+        "k2": 0.13,
+        "memory": 0.25,
+        "rebirth_intensity": 0.25
+      },
+      "estimated_recon_rate": 0.328125,
+      "model_probability": 0.2846279231563351,
+      "distance_from_half": 0.171875
+    },
+    {
+      "params": {
+        "coupling": 0.11,
+        "k2": 0.08,
+        "memory": 0.25,
+        "rebirth_intensity": 0.25
+      },
+      "estimated_recon_rate": 0.31640625,
+      "model_probability": 0.2820977045624614,
+      "distance_from_half": 0.18359375
+    },
+    {
+      "params": {
+        "coupling": 0.14,
+        "k2": 0.11,
+        "memory": 0.25,
+        "rebirth_intensity": 0.25
+      },
+      "estimated_recon_rate": 0.30859375,
+      "model_probability": 0.2760500640502508,
+      "distance_from_half": 0.19140625
+    },
+    {
+      "params": {
+        "coupling": 0.14,
+        "k2": 0.03,
+        "memory": 0.6,
+        "rebirth_intensity": 0.1
+      },
+      "estimated_recon_rate": 0.3046875,
+      "model_probability": 0.3177307605437048,
+      "distance_from_half": 0.1953125
+    },
+    {
+      "params": {
+        "coupling": 0.14,
+        "k2": 0.16,
+        "memory": 0.25,
+        "rebirth_intensity": 0.25
+      },
+      "estimated_recon_rate": 0.3046875,
+      "model_probability": 0.2977908290190559,
+      "distance_from_half": 0.1953125
+    },
+    {
+      "params": {
+        "coupling": 0.14,
+        "k2": 0.03,
+        "memory": 0.25,
+        "rebirth_intensity": 0.25
+      },
+      "estimated_recon_rate": 0.28515625,
+      "model_probability": 0.2433831559088187,
+      "distance_from_half": 0.21484375
+    },
+    {
+      "params": {
+        "coupling": 0.14,
+        "k2": 0.05,
+        "memory": 0.25,
+        "rebirth_intensity": 0.25
+      },
+      "estimated_recon_rate": 0.28515625,
+      "model_probability": 0.25129829249906777,
+      "distance_from_half": 0.21484375
+    },
+    {
+      "params": {
+        "coupling": 0.14,
+        "k2": 0.03,
+        "memory": 0.1,
+        "rebirth_intensity": 0.25
+      },
+      "estimated_recon_rate": 0.28515625,
+      "model_probability": 0.3286670458838252,
+      "distance_from_half": 0.21484375
+    },
+    {
+      "params": {
+        "coupling": 0.14,
+        "k2": 0.08,
+        "memory": 0.25,
+        "rebirth_intensity": 0.25
+      },
+      "estimated_recon_rate": 0.28125,
+      "model_probability": 0.26348755422055004,
+      "distance_from_half": 0.21875
+    }
+  ],
+  "validation": [
+    {
+      "params": {
+        "coupling": 0.02,
+        "k2": 0.13,
+        "memory": 0.6,
+        "rebirth_intensity": 0.1
+      },
+      "mean_rate": 0.46136474609375,
+      "sd": 0.031243263949150283,
+      "n": 64
+    },
+    {
+      "params": {
+        "coupling": 0.14,
+        "k2": 0.03,
+        "memory": 0.25,
+        "rebirth_intensity": 0.1
+      },
+      "mean_rate": 0.5531005859375,
+      "sd": 0.03109488135345097,
+      "n": 64
+    },
+    {
+      "params": {
+        "coupling": 0.14,
+        "k2": 0.13,
+        "memory": 0.6,
+        "rebirth_intensity": 0.1
+      },
+      "mean_rate": 0.364013671875,
+      "sd": 0.029619601051482355,
+      "n": 64
+    },
+    {
+      "params": {
+        "coupling": 0.02,
+        "k2": 0.03,
+        "memory": 0.6,
+        "rebirth_intensity": 0.1
+      },
+      "mean_rate": 0.40997314453125,
+      "sd": 0.027874228629314678,
+      "n": 64
+    },
+    {
+      "params": {
+        "coupling": 0.14,
+        "k2": 0.08,
+        "memory": 0.6,
+        "rebirth_intensity": 0.1
+      },
+      "mean_rate": 0.3402099609375,
+      "sd": 0.03206873305563218,
+      "n": 64
+    }
+  ],
+  "verdict": "BOUNDARY REFINEMENT: STABLE 50-PERCENT CORRIDOR",
+  "scientific_boundary": "The boundary is a property of the abstract simulation and its chosen equations; it is not evidence of a physical phase transition."
+}

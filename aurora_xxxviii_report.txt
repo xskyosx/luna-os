@@ -1,0 +1,17 @@
+Aurora XXXVIII — Mechanism Separator
+
+Replicates per condition: 256
+Purpose: decompose the perturbation into magnitude, direction, randomness, baseline replacement, and memory destruction.
+
+Mean observer shift across four observers:
+  baseline_replacement: 0.172796
+  memory_destruction: 0.165134
+  matched_perturbation: 0.148494
+  direction: 0.129132
+  randomness: 0.093722
+  magnitude: 0.073978
+
+Interpretation:
+This is a toy dynamical-system experiment, not evidence about physical quantum systems.
+The decomposition identifies which coded intervention ingredients move the four observers most strongly.
+Next: preregister the strongest candidate against matched controls and blind the mechanism labels.

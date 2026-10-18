@@ -1,0 +1,12 @@
+AURORA XIII-C — THE COMMON CENTER — SAMPLE LOG
+Seed: 20260922 | Cycles: 360
+This file is a sample. The .py program can generate fresh runs on the phone.
+
+Cycle   1 | BALANCED  | health=0.837 | cohesion=0.767 | unc=0.319 | risk=0.233 | integrity=0.806 | COOPERATIVE_ACTION
+Cycle  60 | BALANCED  | health=0.719 | cohesion=0.839 | unc=0.457 | risk=0.360 | integrity=0.738 | CAUTIOUS_ACTION
+Cycle 120 | BALANCED  | health=0.871 | cohesion=0.938 | unc=0.394 | risk=0.248 | integrity=0.833 | COOPERATIVE_ACTION
+Cycle 121 | SHOCK     | health=0.794 | cohesion=0.938 | unc=0.455 | risk=0.318 | integrity=0.787 | CAUTIOUS_ACTION
+Cycle 180 | SHOCK     | health=0.000 | cohesion=0.318 | unc=1.000 | risk=1.000 | integrity=0.214 | WAIT_AND_LEARN
+Cycle 240 | SHOCK     | health=0.029 | cohesion=0.000 | unc=1.000 | risk=0.984 | integrity=0.161 | WAIT_AND_LEARN
+Cycle 300 | REBUILD   | health=0.871 | cohesion=0.066 | unc=0.656 | risk=0.366 | integrity=0.588 | CAUTIOUS_ACTION
+Cycle 360 | REBUILD   | health=0.974 | cohesion=0.332 | unc=0.413 | risk=0.200 | integrity=0.746 | CAUTIOUS_ACTION

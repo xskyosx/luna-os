@@ -1,0 +1,54 @@
+Aurora XLI — Causal Ladder
+
+{
+  "experiment": "AXLI-CAUSAL-LADDER",
+  "seed": 41041,
+  "replicates": 384,
+  "summary": {
+    "state": {
+      "mean_delta": -0.032729980468749996,
+      "sd_delta": 0.13820986172229005,
+      "positive_rate": 0.3854166666666667,
+      "mean_energy_change": -0.47359614894525187
+    },
+    "perturbation": {
+      "mean_delta": 0.012230794270833333,
+      "sd_delta": 0.087006012675299,
+      "positive_rate": 0.5598958333333334,
+      "mean_energy_change": 0.09573785189489607
+    },
+    "observer": {
+      "mean_delta": -0.043406087239583335,
+      "sd_delta": 0.044462283491672146,
+      "positive_rate": 0.12239583333333333,
+      "mean_energy_change": -0.29553002233282777
+    },
+    "transition": {
+      "mean_delta": -0.05748095703125,
+      "sd_delta": 0.026630287154377173,
+      "positive_rate": 0,
+      "mean_energy_change": -0.13062938148589712
+    },
+    "recovery": {
+      "mean_delta": -0.008554850260416667,
+      "sd_delta": 0.0041140351618410495,
+      "positive_rate": 0,
+      "mean_energy_change": -0.01637532603626783
+    }
+  },
+  "reversal": {
+    "perturbation": {
+      "mean_forward_minus_reverse": 0.002500488281250001,
+      "positive_rate": 0.4739583333333333
+    },
+    "transition": {
+      "mean_forward_minus_reverse": -0.04691878255208334,
+      "positive_rate": 0.20833333333333334
+    },
+    "recovery": {
+      "mean_forward_minus_reverse": -0.006082356770833331,
+      "positive_rate": 0.3072916666666667
+    }
+  },
+  "node9": "CAUSAL SEPARATION MAPPED; NO PHYSICAL INTERPRETATION"
+}

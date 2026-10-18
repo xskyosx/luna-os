@@ -1,0 +1,13 @@
+Aurora XLII — Counterfactual Twin
+
+Replicates: 512
+Steps: 24
+Intervention step: 6
+
+perturbed: final=0.036842, peak=0.095679, reconverged=0.033, path_index=0.539
+rebirth: final=0.190419, peak=0.497352, reconverged=0.000, path_index=0.542
+mirror_reset: final=0.031926, peak=0.193307, reconverged=0.150, path_index=0.418
+
+Node 9:
+Interventions create separable counterfactual trajectories, with recovery/reconvergence differing by intervention type.
+This is a property of the simulation rules, not evidence about physical particles or quantum systems.

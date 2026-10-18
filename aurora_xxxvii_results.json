@@ -1,0 +1,165 @@
+{
+  "experiment": "AXXXVII-PERTURBATION-TWIN-37037",
+  "replicates_per_strength": 128,
+  "strengths": [
+    0.25,
+    0.5,
+    0.75,
+    1.0
+  ],
+  "modes": [
+    "rebirth",
+    "perturbation"
+  ],
+  "matching": "same replicate and reset strength; blinded-label analysis is represented by fixed mode-independent measurement code",
+  "results": {
+    "0.25": {
+      "rebirth": {
+        "agreement": 0.17858565449451178,
+        "recovery_distance": 0.0778413259094375,
+        "observer_means": {
+          "resonance": 0.9794849130681889,
+          "coherence": 0.885226255570165,
+          "entropy": 0.15807056756270066,
+          "mirror": 0.8488562017971547
+        }
+      },
+      "perturbation": {
+        "agreement": 0.1778837427594841,
+        "recovery_distance": 0.114976739955995,
+        "observer_means": {
+          "resonance": 0.9754325441711057,
+          "coherence": 0.8791784937101869,
+          "entropy": 0.1533261206423021,
+          "mirror": 0.8371416099583668
+        }
+      }
+    },
+    "0.5": {
+      "rebirth": {
+        "agreement": 0.18243388227447163,
+        "recovery_distance": 0.17749808585511292,
+        "observer_means": {
+          "resonance": 0.9744668303167984,
+          "coherence": 0.8735520831826674,
+          "entropy": 0.1569090379279006,
+          "mirror": 0.8372831212668698
+        }
+      },
+      "perturbation": {
+        "agreement": 0.18176094275395063,
+        "recovery_distance": 0.2027652627405933,
+        "observer_means": {
+          "resonance": 0.9672395317147544,
+          "coherence": 0.8670971798398454,
+          "entropy": 0.149097358396472,
+          "mirror": 0.823121335479008
+        }
+      }
+    },
+    "0.75": {
+      "rebirth": {
+        "agreement": 0.18945488862628912,
+        "recovery_distance": 0.3367757556219278,
+        "observer_means": {
+          "resonance": 0.9662182536700522,
+          "coherence": 0.8599023974364174,
+          "entropy": 0.15573859144215688,
+          "mirror": 0.8188212124436919
+        }
+      },
+      "perturbation": {
+        "agreement": 0.18836968292866113,
+        "recovery_distance": 0.36358312439395185,
+        "observer_means": {
+          "resonance": 0.9596580184851159,
+          "coherence": 0.8529416107982543,
+          "entropy": 0.14818713756485422,
+          "mirror": 0.8126294507192529
+        }
+      }
+    },
+    "1.0": {
+      "rebirth": {
+        "agreement": 0.1981378705917822,
+        "recovery_distance": 0.49880732621639834,
+        "observer_means": {
+          "resonance": 0.9535244742698339,
+          "coherence": 0.8419480010184728,
+          "entropy": 0.15201077901324586,
+          "mirror": 0.7928897075317013
+        }
+      },
+      "perturbation": {
+        "agreement": 0.19400882819133752,
+        "recovery_distance": 0.5002699364340303,
+        "observer_means": {
+          "resonance": 0.9513327781930999,
+          "coherence": 0.8399961295526506,
+          "entropy": 0.14572583432320843,
+          "mirror": 0.7856880870634254
+        }
+      }
+    }
+  },
+  "paired_tests": {
+    "0.25": {
+      "agreement": {
+        "rebirth_minus_perturbation": 0.000701911735027676,
+        "p_value": 0.5942028985507246
+      },
+      "recovery_distance": {
+        "rebirth_minus_perturbation": -0.037135414046557506,
+        "p_value": 0.0004997501249375312
+      }
+    },
+    "0.5": {
+      "agreement": {
+        "rebirth_minus_perturbation": 0.0006729395205209994,
+        "p_value": 0.704647676161919
+      },
+      "recovery_distance": {
+        "rebirth_minus_perturbation": -0.025267176885480386,
+        "p_value": 0.026486756621689155
+      }
+    },
+    "0.75": {
+      "agreement": {
+        "rebirth_minus_perturbation": 0.0010852056976279876,
+        "p_value": 0.6621689155422289
+      },
+      "recovery_distance": {
+        "rebirth_minus_perturbation": -0.02680736877202404,
+        "p_value": 0.1724137931034483
+      }
+    },
+    "1.0": {
+      "agreement": {
+        "rebirth_minus_perturbation": 0.004129042400444663,
+        "p_value": 0.2478760619690155
+      },
+      "recovery_distance": {
+        "rebirth_minus_perturbation": -0.0014626102176319457,
+        "p_value": 0.9385307346326837
+      }
+    }
+  },
+  "pooled_summary": {
+    "agreement": {
+      "mean_difference": 0.0016472748384053315,
+      "sd_difference": 0.027392774567496486,
+      "p_value": 0.17594135288237253,
+      "positive_fraction": 0.5,
+      "n": 512
+    },
+    "recovery_distance": {
+      "mean_difference": -0.02266814248042347,
+      "sd_difference": 0.17980345450455892,
+      "p_value": 0.007330889703432189,
+      "positive_fraction": 0.451171875,
+      "n": 512
+    }
+  },
+  "verdict": "REBIRTH NOT DISTINGUISHABLE FROM MATCHED PERTURBATION",
+  "scientific_note": "Computational dynamical-system result only; not evidence for physical rebirth or new physics."
+}

@@ -1,0 +1,28 @@
+{
+  "experiment": "AXXXIX-MEMORYTRIAL",
+  "seed": 39039,
+  "replicates_per_condition": 512,
+  "means": {
+    "memory_preserved": 0.3577073029406322,
+    "memory_erased": 0.352356808419883,
+    "memory_replaced": 0.3519373934512036
+  },
+  "pairwise": {
+    "memory_erased_minus_memory_preserved": {
+      "mean": -0.005350494520749212,
+      "sd": 0.08899001495685792,
+      "positive_rate": 0.4765625
+    },
+    "memory_replaced_minus_memory_preserved": {
+      "mean": -0.0057699094894285525,
+      "sd": 0.090792263000266,
+      "positive_rate": 0.48046875
+    },
+    "memory_erased_minus_memory_replaced": {
+      "mean": 0.00041941496867934085,
+      "sd": 0.08484590405888436,
+      "positive_rate": 0.4921875
+    }
+  },
+  "permutation_p_erased_vs_preserved": 0.9112721819545113
+}

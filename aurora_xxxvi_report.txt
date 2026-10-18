@@ -1,0 +1,13 @@
+AURORA XXXVI — RECOVERY OBSERVATORY
+AXXXVI-RECOVERY-OBSERVATORY-36036
+
+experiment: AXXXVI-RECOVERY-OBSERVATORY-36036
+replicates_per_strength: 256
+strengths: [0.0, 0.25, 0.5, 0.75, 1.0]
+intervention: cycle 4 phase 8; reset strength blends deterministic baseline with fresh random state
+recovery_window: [5, 6, 7]
+results: {'0.0': {'agreement': 0.17599620685399345, 'recovery_distance': 0.08765069208732422, 'resonance': 0.9765181801743329, 'coherence': 0.8835448890249565, 'entropy': 0.15253989844006646, 'mirror': 0.8442797319294367}, '0.25': {'agreement': 0.17868103550317577, 'recovery_distance': 0.07679311154075416, 'resonance': 0.9791834569773934, 'coherence': 0.8853326373808177, 'entropy': 0.15786723116309667, 'mirror': 0.8510095328035133}, '0.5': {'agreement': 0.18255934597374346, 'recovery_distance': 0.16558523566252456, 'resonance': 0.9746456716096409, 'coherence': 0.8749498192765262, 'entropy': 0.15720730123412952, 'mirror': 0.8365283934104188}, '0.75': {'agreement': 0.19070970533805645, 'recovery_distance': 0.32109636641226563, 'resonance': 0.9645272412969433, 'coherence': 0.8586343610413062, 'entropy': 0.1553815046572594, 'mirror': 0.8141899965564033}, '1.0': {'agreement': 0.19785714349366973, 'recovery_distance': 0.47864979426933524, 'resonance': 0.9548336306898244, 'coherence': 0.8444510688065077, 'entropy': 0.152915007989672, 'mirror': 0.7994506667779812}}
+contrasts_vs_zero: {'0.25': {'agreement_delta': 0.0026848286491823192, 'recovery_distance_delta': -0.010857580546570059}, '0.5': {'agreement_delta': 0.006563139119750011, 'recovery_distance_delta': 0.07793454357520034}, '0.75': {'agreement_delta': 0.014713498484063003, 'recovery_distance_delta': 0.2334456743249414}, '1.0': {'agreement_delta': 0.02186093663967628, 'recovery_distance_delta': 0.390999102182011}}
+dose_response_correlation: {'agreement': 0.9783324240765756, 'recovery_distance': 0.9450738523788902}
+verdict: DOSE-RESPONSE DETECTED
+scientific_note: Computational dynamical-system result only; not evidence for physical phenomena.
