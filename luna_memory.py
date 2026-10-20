@@ -373,7 +373,7 @@ def restore_backup():
                 print(f"Backup is damaged (CRC failure in {damaged}). Nothing was restored.")
                 return
     except (zipfile.BadZipFile, OSError, EOFError, RuntimeError, ValueError) as e:
-        print(f"Backup could not be validated ({type(e).__name__}). Nothing was restored.")
+        print(f"Backup is damaged or could not be validated ({type(e).__name__}). Nothing was restored.")
         return
 
     safety=backup("before_restore")
