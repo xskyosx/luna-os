@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: "3.x"
       - name: Compile Python engines and tests
-        run: python -m py_compile luna_memory.py aurora_xlii.py aurora_xl.py tests/test_luna_memory.py tests/test_aurora_portability.py
+        run: python -m py_compile luna_memory.py aurora_xlii.py aurora_xl.py tests/test_luna_memory.py tests/test_aurora_portability.py tests/test_luna_voice.py
       - name: Run Aurora simulations twice and verify reproducibility
         run: |
           python aurora_xlii.py > /dev/null
