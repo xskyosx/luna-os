@@ -7,7 +7,7 @@ import json
 import shutil
 import zipfile
 from datetime import datetime
-from pathlib import Path
+from pathlib import Path, PurePosixPath, PureWindowsPath
 
 ROOT = Path(__file__).resolve().parent
 MEMORIES = ROOT / "memories"
@@ -49,6 +49,21 @@ def safe_name(value):
 
 def sha256_bytes(data):
     return hashlib.sha256(data).hexdigest()
+
+
+def safe_restore_target(member, root=None):
+    """Resolve a ZIP member beneath root or reject unsafe/cross-platform paths."""
+    raw = str(member)
+    base = Path(ROOT if root is None else root).resolve()
+    posix = PurePosixPath(raw)
+    windows = PureWindowsPath(raw)
+    if (not raw or posix.is_absolute() or windows.is_absolute()
+            or windows.drive or "\\" in raw or ".." in posix.parts):
+        raise ValueError("Unsafe backup path; restore stopped.")
+    target = (base / Path(*posix.parts)).resolve()
+    if target == base or base not in target.parents:
+        raise ValueError("Unsafe backup path; restore stopped.")
+    return target
 
 def setup():
     for folder in (MEMORIES, TRANSCRIPTS, BACKUPS, INBOX, ORIGINALS, MANIFESTS):
@@ -267,9 +282,10 @@ def restore_backup():
     if not 1 <= int(val) <= len(fs): print("Invalid selection."); return
     b=fs[int(val)-1]; safety=backup("before_restore")
     with zipfile.ZipFile(b) as z:
+        # Validate every member before extracting any of them. Also reject Windows-style
+        # paths so a backup cannot become unsafe when moved between operating systems.
         for member in z.namelist():
-            target=(ROOT/member).resolve()
-            if ROOT.resolve() not in target.parents: raise ValueError("Unsafe backup path; restore stopped.")
+            safe_restore_target(member, ROOT)
         z.extractall(ROOT)
     print(f"Restored {b.name}. Pre-restore state: {safety.name}")
 
