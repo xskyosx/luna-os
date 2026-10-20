@@ -336,7 +336,7 @@ def main():
         "8":("List transcript archive",list_transcripts),
         "9":("Create backup now",lambda:print("Backup:",backup())),
         "10":("Restore backup",restore_backup),
-        "11":("Show nine Sisters",show_sisters),
+        "11":("Show Sister registry",show_sisters),
         "12":("Import ChatGPT conversations.json export",import_chatgpt_export),
         "0":("Exit",None),
     }
