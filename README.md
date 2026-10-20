@@ -16,6 +16,25 @@ python3 luna_memory.py
 
 The engine creates its local folders on first launch. Memories are editable JSON records; transcript text is kept separately; ChatGPT export imports preserve a copy of the original JSON and write a provenance manifest. It does **not** sign in to ChatGPT or retrieve account data automatically.
 
+## Luna Voice First Light
+
+A first runnable voice interface is available in `luna_voice.py`. It uses Android speech recognition and text-to-speech through Termux:API, with a small offline fallback and an optional OpenAI-compatible local-model bridge. This is a voice shell, not a bundled language model.
+
+```sh
+# In Termux; install the Termux:API companion app separately from the same trusted source.
+pkg install python termux-api
+python luna_voice.py
+```
+
+To connect a local OpenAI-compatible chat server (for example, one listening on port 1234 on this same device):
+
+```sh
+export LUNA_CHAT_ENDPOINT="http://127.0.0.1:1234/v1/chat/completions"
+export LUNA_CHAT_MODEL="local-model"
+python luna_voice.py
+```
+
+See [Voice First Light setup and privacy notes](docs/VOICE_FIRST_LIGHT.md) for setup, troubleshooting, and voice selection. Remote endpoints are blocked unless you explicitly set `LUNA_ALLOW_REMOTE=1`. Conversation history is held in RAM for the active session and is not written to disk. Android's configured text-to-speech voice determines Luna's spoken voice; change it in Android text-to-speech settings.
 ## Project checks
 
 Run the dependency-free unit tests from the repository root:
