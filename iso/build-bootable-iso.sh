@@ -27,7 +27,7 @@ class Links(HTMLParser):
     def handle_starttag(self, tag, attrs):
         if tag == "a":
             href = dict(attrs).get("href", "")
-            if re.fullmatch(r"v[0-9]+\\.[0-9]+/", href):
+            if re.fullmatch(r"v[0-9]+\.[0-9]+/", href):
                 self.items.append(href)
 
 parser = Links()
@@ -35,7 +35,7 @@ parser.feed(Path(sys.argv[1]).read_text(encoding="utf-8", errors="replace"))
 if not parser.items:
     raise SystemExit("Could not find a stable version directory in the Alpine index.")
 def version(name):
-    return tuple(int(part) for part in re.fullmatch(r"v([0-9]+)\\.([0-9]+)/", name).groups())
+    return tuple(int(part) for part in re.fullmatch(r"v([0-9]+)\.([0-9]+)/", name).groups())
 print(sorted(set(parser.items), key=version)[-1])
 PY
 )
@@ -58,7 +58,7 @@ class Links(HTMLParser):
     def handle_starttag(self, tag, attrs):
         if tag == "a":
             href = dict(attrs).get("href", "")
-            if re.fullmatch(r"alpine-standard-[0-9.]+-x86\\.iso", href):
+            if re.fullmatch(r"alpine-standard-[0-9.]+-x86\.iso", href):
                 self.items.append(href)
 
 parser = Links()
