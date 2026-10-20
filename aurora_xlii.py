@@ -3,6 +3,7 @@ from pathlib import Path
 from statistics import mean, pstdev
 
 SEED=42042
+KIND_OFFSETS={'perturbed': 101, 'rebirth': 202, 'mirror_reset': 303}
 REPS=512
 STEPS=24
 INTERVENTION_STEP=6
