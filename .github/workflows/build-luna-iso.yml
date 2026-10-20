@@ -27,7 +27,7 @@ jobs:
           python3 -m py_compile luna_memory.py luna_voice.py aurora_xlii.py aurora_xl.py
           python3 -m unittest discover -s tests -v
       - name: Build and verify bootable ISO
-        run: sh iso/build-bootable-iso.sh
+        run: sh ./iso/build-bootable-iso.sh
       - name: Upload ISO and verification files
         uses: actions/upload-artifact@v4
         with:
