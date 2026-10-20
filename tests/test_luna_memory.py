@@ -104,10 +104,12 @@ class MemoryFileSafetyTests(unittest.TestCase):
                 hostile = luna_memory.BACKUPS / "hostile.zip"
                 with zipfile.ZipFile(hostile, "w") as archive:
                     archive.writestr("../../escaped.txt", "not allowed")
-                with patch("builtins.input", return_value="1"), contextlib.redirect_stdout(io.StringIO()):
-                    with self.assertRaisesRegex(ValueError, "Unsafe backup path"):
-                        luna_memory.restore_backup()
+                output = io.StringIO()
+                with patch("builtins.input", return_value="1"), contextlib.redirect_stdout(output):
+                    luna_memory.restore_backup()
+                self.assertIn("Nothing was restored", output.getvalue())
                 self.assertFalse(outside.exists())
+                self.assertEqual([p.name for p in luna_memory.BACKUPS.iterdir()], ["hostile.zip"])
 
     def test_chatgpt_import_preserves_original_and_is_idempotent(self):
         with tempfile.TemporaryDirectory() as temp:
