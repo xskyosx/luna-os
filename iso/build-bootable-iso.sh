@@ -75,15 +75,19 @@ PY
 
 echo "Selected Alpine ISO: $ISO_NAME"
 BASE_ISO="$BASE_DIR/$ISO_NAME"
-CHECKSUMS="$BASE_DIR/sha256sums.txt"
+CHECKSUM_FILE="$BASE_DIR/$ISO_NAME.sha256"
 curl --fail --location --silent --show-error "$INDEX_URL$ISO_NAME" -o "$BASE_ISO"
-curl --fail --location --silent --show-error "$INDEX_URL"sha256sums.txt -o "$CHECKSUMS"
+# Alpine publishes a checksum beside each ISO; there is no sha256sums.txt
+# in the release directory.
+curl --fail --location --silent --show-error "$INDEX_URL$ISO_NAME.sha256" -o "$CHECKSUM_FILE"
 
 (
   cd "$BASE_DIR"
-  grep -E "[[:space:]]$ISO_NAME$" "$CHECKSUMS" > "$ISO_NAME.sha256"
-  test -s "$ISO_NAME.sha256"
-  sha256sum -c "$ISO_NAME.sha256"
+  # Normalize the checksum file's target to the locally downloaded filename.
+  EXPECTED_SHA=$(awk 'NR == 1 {print $1}' "$ISO_NAME.sha256")
+  test "${#EXPECTED_SHA}" -eq 64
+  printf '%s  %s\n' "$EXPECTED_SHA" "$ISO_NAME" > "$ISO_NAME.verify"
+  sha256sum -c "$ISO_NAME.verify"
 )
 
 # Stage only the source, docs, tests, and installer needed on the target system.
