@@ -138,5 +138,81 @@ class MemoryFileSafetyTests(unittest.TestCase):
                 self.assertEqual(len(list(luna_memory.MANIFESTS.glob("*.json"))), 1)
 
 
+class MemoryImportIntegrityTests(unittest.TestCase):
+    def test_import_records_malformed_items_and_duplicate_ids_and_titles(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp) / "project"
+            export = Path(temp) / "conversations.json"
+            payload = [
+                {"id": "same-id", "title": "Same title", "messages": [
+                    {"role": "user", "timestamp": 1, "content": "first"}
+                ]},
+                42,
+                {"id": "same-id", "title": "Same title", "messages": [
+                    {"role": "assistant", "timestamp": 2, "content": "second"}
+                ]},
+            ]
+            export.write_text(json.dumps(payload), encoding="utf-8")
+            with isolated_project(root):
+                output = io.StringIO()
+                with patch("builtins.input", side_effect=[str(export), "IMPORT"]), contextlib.redirect_stdout(output):
+                    luna_memory.import_chatgpt_export()
+                manifests = list(luna_memory.MANIFESTS.glob("*.json"))
+                transcripts = list(luna_memory.TRANSCRIPTS.glob("*.txt"))
+                self.assertEqual(len(transcripts), 2)
+                manifest = json.loads(manifests[0].read_text(encoding="utf-8"))
+                self.assertEqual(manifest["malformed_records_skipped"], 1)
+                self.assertEqual(manifest["malformed_record_details"][0]["record_index"], 2)
+                self.assertEqual(manifest["duplicate_conversation_id_group_count"], 1)
+                self.assertEqual(manifest["duplicate_conversation_id_groups"][0]["conversation_id"], "same-id")
+                self.assertEqual(manifest["title_collision_group_count"], 1)
+                self.assertEqual(manifest["transcripts_created"], 2)
+                self.assertEqual(len({item["transcript"] for item in manifest["items"]}), 2)
+                self.assertIn("Duplicate-ID groups: 1", output.getvalue())
+
+    def test_import_rejects_unrecognized_top_level_shape_without_writes(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp) / "project"
+            export = Path(temp) / "conversations.json"
+            export.write_text('{"unexpected": true}', encoding="utf-8")
+            with isolated_project(root):
+                with patch("builtins.input", return_value=str(export)), contextlib.redirect_stdout(io.StringIO()):
+                    luna_memory.import_chatgpt_export()
+                self.assertEqual(list(luna_memory.ORIGINALS.iterdir()), [])
+                self.assertEqual(list(luna_memory.MANIFESTS.iterdir()), [])
+                self.assertEqual(list(luna_memory.TRANSCRIPTS.iterdir()), [])
+
+    def test_damaged_backup_is_rejected_before_restore_or_safety_backup(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp) / "project"
+            with isolated_project(root):
+                damaged = luna_memory.BACKUPS / "damaged.zip"
+                damaged.write_bytes(b"not a zip archive")
+                output = io.StringIO()
+                with patch("builtins.input", return_value="1"), contextlib.redirect_stdout(output):
+                    luna_memory.restore_backup()
+                self.assertIn("Nothing was restored", output.getvalue())
+                self.assertFalse((root / "escaped.txt").exists())
+                self.assertEqual([p.name for p in luna_memory.BACKUPS.iterdir()], ["damaged.zip"])
+
+    def test_corrupt_zip_crc_is_rejected_without_extracting_any_member(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp) / "project"
+            with isolated_project(root):
+                damaged = luna_memory.BACKUPS / "crc.zip"
+                with zipfile.ZipFile(damaged, "w", compression=zipfile.ZIP_STORED) as archive:
+                    archive.writestr("safe.txt", "payload to corrupt")
+                raw = bytearray(damaged.read_bytes())
+                payload_offset = raw.index(b"payload to corrupt")
+                raw[payload_offset] ^= 0x01
+                damaged.write_bytes(raw)
+                output = io.StringIO()
+                with patch("builtins.input", return_value="1"), contextlib.redirect_stdout(output):
+                    luna_memory.restore_backup()
+                self.assertIn("damaged", output.getvalue().lower())
+                self.assertFalse((root / "safe.txt").exists())
+                self.assertEqual([p.name for p in luna_memory.BACKUPS.iterdir()], ["crc.zip"])
+
+
 if __name__ == "__main__":
     unittest.main()
