@@ -2,7 +2,8 @@ import math, json, hashlib, random
 from statistics import mean, pstdev
 from pathlib import Path
 
-OUT=Path('/mnt/data')
+OUT=Path(__file__).resolve().parent / 'results'
+OUT.mkdir(parents=True, exist_ok=True)
 SEED=41039
 REPS=384
 STEPS=90
