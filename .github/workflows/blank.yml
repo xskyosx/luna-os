@@ -32,8 +32,24 @@ jobs:
           sha256sum results/aurora_xl_results.json > /tmp/aurora_xl.sha256
           python aurora_xl.py > /dev/null
           sha256sum --check /tmp/aurora_xl.sha256
-      - name: Validate Aurora result summaries
+      - name: Validate and summarize Aurora results
         run: |
-          python -c "import json; from pathlib import Path; p=Path('results'); a=json.loads((p/'aurora_xlii_results.json').read_text(encoding='utf-8')); b=json.loads((p/'aurora_xl_results.json').read_text(encoding='utf-8')); assert a['experiment']=='AXLII-COUNTERFACTUAL-TWIN' and a['replicates']==512; assert b['experiment']=='AXL-BASELINE-IDENTITY' and b['replicates']==384; print('Aurora XL and XLII result summaries validated.')"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          out = Path("results")
+          xlii = json.loads((out / "aurora_xlii_results.json").read_text(encoding="utf-8"))
+          xl = json.loads((out / "aurora_xl_results.json").read_text(encoding="utf-8"))
+          assert xlii["experiment"] == "AXLII-COUNTERFACTUAL-TWIN" and xlii["replicates"] == 512
+          assert xl["experiment"] == "AXL-BASELINE-IDENTITY" and xl["replicates"] == 384
+          print("Aurora XLII — counterfactual twin:")
+          for name, values in xlii["summaries"].items():
+              print(f"  {name}: final_divergence={values['final_divergence']:.6f}, peak={values['peak_divergence']:.6f}, reconverged_rate={values['reconverged_rate']:.3f}")
+          print("Aurora XL — baseline identity:")
+          for name, values in xl["conditions"].items():
+              print(f"  {name}: post_intersection={values['post_intersection']:.6f}, delta={values['intersection_delta']:.6f}, disagreement={values['mean_disagreement']:.6f}")
+          print("Aurora outputs validated. These are simulation results, not physical measurements.")
+          PY
       - name: Run dependency-free unit tests
         run: python -m unittest discover -s tests -v
