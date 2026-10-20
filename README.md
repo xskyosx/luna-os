@@ -25,7 +25,7 @@ python -m py_compile luna_memory.py tests/test_luna_memory.py
 python -m unittest discover -s tests -v
 ```
 
-GitHub Actions runs these checks on pushes and pull requests to `main`.
+GitHub Actions runs the memory-engine checks, both Aurora simulations, repeat-run SHA-256 reproducibility checks, and unit tests on pushes and pull requests to `main`. Aurora result files are written to the project-local `results/` folder.
 
 ## Sister and character registry
 
