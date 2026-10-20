@@ -1,0 +1,22 @@
+# Python runtime files
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Generated simulation outputs
+/results/
+
+# Local user data: keep personal memories, transcripts, imports and backups out of Git.
+# Existing tracked archives are not deleted by these rules.
+/memories/*
+!/memories/.gitkeep
+/transcripts/*
+!/transcripts/.gitkeep
+/backups/*
+!/backups/.gitkeep
+/imports/inbox/*
+!/imports/inbox/.gitkeep
+/imports/originals/*
+!/imports/originals/.gitkeep
+/imports/manifests/*
+!/imports/manifests/.gitkeep
