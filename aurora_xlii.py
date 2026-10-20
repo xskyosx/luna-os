@@ -7,6 +7,9 @@ REPS=512
 STEPS=24
 INTERVENTION_STEP=6
 N=9
+KIND_OFFSETS = {"perturbed": 101, "rebirth": 202, "mirror_reset": 303}
+OUT = Path(__file__).resolve().parent / "results"
+OUT.mkdir(parents=True, exist_ok=True)
 
 def init(r):
     return [r.uniform(-1,1) for _ in range(N)]
@@ -52,7 +55,7 @@ kinds=['perturbed','rebirth','mirror_reset']
 all_curves={k:[] for k in kinds}
 for rep in range(REPS):
     for kind in kinds:
-        r=random.Random(SEED + rep*10007 + hash(kind)%1000)
+        r=random.Random(SEED + rep*10007 + KIND_OFFSETS[kind])
         all_curves[kind].append(run_pair(r,kind))
 
 summaries={}
@@ -93,10 +96,10 @@ out={
         'warning':'This is a property of the simulation rules, not evidence about physical particles or quantum systems.'
     }
 }
-Path('/mnt/data/aurora_xlii_results.json').write_text(json.dumps(out,indent=2))
+(OUT / 'aurora_xlii_results.json').write_text(json.dumps(out, indent=2), encoding='utf-8')
 report=['Aurora XLII — Counterfactual Twin','',f'Replicates: {REPS}',f'Steps: {STEPS}',f'Intervention step: {INTERVENTION_STEP}','']
 for k,v in summaries.items():
     report.append(f'{k}: final={v["final_divergence"]:.6f}, peak={v["peak_divergence"]:.6f}, reconverged={v["reconverged_rate"]:.3f}, path_index={path_index[k]:.3f}')
 report += ['', 'Node 9:', out['node9']['finding'], out['node9']['warning']]
-Path('/mnt/data/aurora_xlii_report.txt').write_text('\n'.join(report))
+(OUT / 'aurora_xlii_report.txt').write_text('\n'.join(report), encoding='utf-8')
 print('\n'.join(report))
