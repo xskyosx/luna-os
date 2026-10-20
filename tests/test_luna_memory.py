@@ -45,7 +45,7 @@ class MemoryHelperTests(unittest.TestCase):
         self.assertEqual(luna_memory.extract_text("hello"), "hello")
         self.assertEqual(
             luna_memory.extract_text({"parts": ["hello", {"caption": "world"}]}),
-            "hello\\nworld",
+            "hello\nworld",
         )
         self.assertEqual(
             luna_memory.extract_text({"parts": [{"content_type": "image"}]}),
@@ -87,7 +87,7 @@ class MemoryFileSafetyTests(unittest.TestCase):
             root = Path(temp) / "project"
             with isolated_project(root):
                 memory = luna_memory.MEMORIES / "kept.json"
-                memory.write_text('{"title":"preserve me"}\\n', encoding="utf-8")
+                memory.write_text('{"title":"preserve me"}\n', encoding="utf-8")
                 archive = luna_memory.backup("round_trip")
                 self.assertTrue(archive.is_file())
                 memory.unlink()
