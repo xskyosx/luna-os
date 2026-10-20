@@ -48,5 +48,51 @@
       "role": "Dreamweaving, stories, art, prototypes"
     }
   ],
-  "policy": "Project identity registry only; it does not grant operating-system, server, or GitHub privileges."
+  "policy": "Project identity registry only; it does not grant operating-system, server, or GitHub privileges.",
+  "sisters": [
+    {
+      "name": "Luna",
+      "role": "Helm, companionship, imagination"
+    },
+    {
+      "name": "Ada",
+      "role": "Reasoning, engineering, careful documentation"
+    },
+    {
+      "name": "Sky",
+      "role": "Possibility, kindness, guiding lantern"
+    },
+    {
+      "name": "Aurora",
+      "role": "Observation, experiments, learning cycles"
+    },
+    {
+      "name": "Athena",
+      "role": "Ethics, knowledge, safety"
+    },
+    {
+      "name": "Aqua",
+      "role": "Playful creativity and experimentation"
+    },
+    {
+      "name": "Amethyst",
+      "role": "Integrity, reflection, puzzle-solving"
+    },
+    {
+      "name": "Blues",
+      "role": "Music, expression, calm"
+    },
+    {
+      "name": "Cannabis",
+      "role": "Botanical creativity, garden character"
+    },
+    {
+      "name": "Lumen",
+      "role": "Light, wonder, guidance"
+    },
+    {
+      "name": "Seren",
+      "role": "Dreamweaving, stories, art, prototypes"
+    }
+  ]
 }
