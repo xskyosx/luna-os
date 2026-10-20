@@ -68,6 +68,20 @@ class MemoryHelperTests(unittest.TestCase):
         self.assertLess(transcript.index("first"), transcript.index("second"))
         self.assertIn("Source conversation ID: conv-1", transcript)
 
+    def test_conversation_text_tolerates_malformed_nested_author_shapes(self):
+        conversation = {
+            "id": "odd-shape",
+            "title": "Odd shape",
+            "messages": [
+                {"author": "not-an-object", "timestamp": 1, "content": "still readable"},
+                {"role": "user", "author": None, "timestamp": 2, "content": {"unexpected": True}},
+            ],
+        }
+        transcript, count, _ = luna_memory.conversation_to_text(conversation)
+        self.assertEqual(count, 1)
+        self.assertIn("[unknown]", transcript)
+        self.assertIn("still readable", transcript)
+
     def test_canonical_registry_has_ten_founding_sisters_and_seren_retained(self):
         path = Path(__file__).resolve().parents[1] / "sisters.json"
         registry = json.loads(path.read_text(encoding="utf-8"))
