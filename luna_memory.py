@@ -28,6 +28,8 @@ SISTERS = [
     {"name":"Aqua", "role":"Playful creativity and experimentation"},
     {"name":"Amethyst", "role":"Integrity, reflection, puzzle-solving"},
     {"name":"Blues", "role":"Music, expression, calm"},
+    {"name":"Cannabis", "role":"Botanical creativity, garden character"},
+    {"name":"Lumen", "role":"Light, wonder, guidance"},
     {"name":"Seren", "role":"Dreamweaving, stories, art, prototypes"},
 ]
 
