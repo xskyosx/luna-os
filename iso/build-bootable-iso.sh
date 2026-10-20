@@ -27,8 +27,9 @@ class Links(HTMLParser):
     def handle_starttag(self, tag, attrs):
         if tag == "a":
             href = dict(attrs).get("href", "")
-            if re.fullmatch(r"v[0-9]+\.[0-9]+/", href):
-                self.items.append(href)
+            match = re.search(r"(?:^|/)v([0-9]+)\.([0-9]+)/?$", href)
+            if match:
+                self.items.append(f"v{match.group(1)}.{match.group(2)}/")
 
 parser = Links()
 parser.feed(Path(sys.argv[1]).read_text(encoding="utf-8", errors="replace"))
@@ -58,8 +59,9 @@ class Links(HTMLParser):
     def handle_starttag(self, tag, attrs):
         if tag == "a":
             href = dict(attrs).get("href", "")
-            if re.fullmatch(r"alpine-standard-[0-9.]+-x86\.iso", href):
-                self.items.append(href)
+            name = href.rsplit("/", 1)[-1]
+            if re.fullmatch(r"alpine-standard-[0-9.]+-x86\.iso", name):
+                self.items.append(name)
 
 parser = Links()
 parser.feed(Path(sys.argv[1]).read_text(encoding="utf-8", errors="replace"))
