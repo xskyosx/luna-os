@@ -3,6 +3,7 @@ from pathlib import Path
 from statistics import mean, pstdev
 
 SEED=42042
+KIND_OFFSETS={'perturbed': 101, 'rebirth': 202, 'mirror_reset': 303}
 REPS=512
 STEPS=24
 INTERVENTION_STEP=6
@@ -52,7 +53,7 @@ kinds=['perturbed','rebirth','mirror_reset']
 all_curves={k:[] for k in kinds}
 for rep in range(REPS):
     for kind in kinds:
-        r=random.Random(SEED + rep*10007 + hash(kind)%1000)
+        r=random.Random(SEED + rep*10007 + KIND_OFFSETS[kind])
         all_curves[kind].append(run_pair(r,kind))
 
 summaries={}
@@ -93,7 +94,9 @@ out={
         'warning':'This is a property of the simulation rules, not evidence about physical particles or quantum systems.'
     }
 }
-Path('/mnt/data/aurora_xlii_results.json').write_text(json.dumps(out,indent=2))
+OUT = Path(__file__).resolve().parent / 'results'
+OUT.mkdir(parents=True, exist_ok=True)
+(OUT / 'aurora_xlii_results.json').write_text(json.dumps(out, indent=2), encoding='utf-8')
 report=['Aurora XLII — Counterfactual Twin','',f'Replicates: {REPS}',f'Steps: {STEPS}',f'Intervention step: {INTERVENTION_STEP}','']
 for k,v in summaries.items():
     report.append(f'{k}: final={v["final_divergence"]:.6f}, peak={v["peak_divergence"]:.6f}, reconverged={v["reconverged_rate"]:.3f}, path_index={path_index[k]:.3f}')
