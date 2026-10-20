@@ -61,3 +61,15 @@ GitHub Actions runs the memory-engine checks, both Aurora simulations, repeat-ru
 ## Repository scope
 
 This repository contains experiments at different stages of maturity. A successful syntax check or unit test is not a claim that every prototype is a production-ready application.
+
+
+## Limbo x86 bootable ISO
+
+A first bootable ISO build is available as a GitHub Actions workflow. It keeps the official Alpine standard x86 boot system intact and adds the LUNA OS source bundle at `/LUNA-OS/`.
+
+- Build guide: [`iso/README.md`](iso/README.md)
+- ISO builder: [`iso/build-bootable-iso.sh`](iso/build-bootable-iso.sh)
+- Safe project installer: [`iso/install-luna.sh`](iso/install-luna.sh)
+- Workflow: [Build LUNA OS Limbo x86 ISO](.github/workflows/build-luna-iso.yml)
+
+Run the workflow from the Actions tab to create an ISO artifact and SHA-256 verification file. This milestone is a bootable Alpine installer with the LUNA OS bundle, not yet a preinstalled live XFCE desktop. The included Android voice shell still depends on Termux:API and will not automatically access Android speech services from inside Alpine.
