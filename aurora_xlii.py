@@ -8,6 +8,9 @@ REPS=512
 STEPS=24
 INTERVENTION_STEP=6
 N=9
+KIND_OFFSETS = {"perturbed": 101, "rebirth": 202, "mirror_reset": 303}
+OUT = Path(__file__).resolve().parent / "results"
+OUT.mkdir(parents=True, exist_ok=True)
 
 def init(r):
     return [r.uniform(-1,1) for _ in range(N)]
@@ -94,8 +97,6 @@ out={
         'warning':'This is a property of the simulation rules, not evidence about physical particles or quantum systems.'
     }
 }
-OUT = Path(__file__).resolve().parent / 'results'
-OUT.mkdir(parents=True, exist_ok=True)
 (OUT / 'aurora_xlii_results.json').write_text(json.dumps(out, indent=2), encoding='utf-8')
 report=['Aurora XLII — Counterfactual Twin','',f'Replicates: {REPS}',f'Steps: {STEPS}',f'Intervention step: {INTERVENTION_STEP}','']
 for k,v in summaries.items():

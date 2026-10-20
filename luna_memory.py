@@ -7,7 +7,7 @@ import json
 import shutil
 import zipfile
 from datetime import datetime
-from pathlib import Path
+from pathlib import Path, PurePosixPath, PureWindowsPath
 
 ROOT = Path(__file__).resolve().parent
 MEMORIES = ROOT / "memories"
@@ -49,6 +49,21 @@ def safe_name(value):
 
 def sha256_bytes(data):
     return hashlib.sha256(data).hexdigest()
+
+
+def safe_restore_target(member, root=None):
+    """Resolve a ZIP member beneath root or reject unsafe/cross-platform paths."""
+    raw = str(member)
+    base = Path(ROOT if root is None else root).resolve()
+    posix = PurePosixPath(raw)
+    windows = PureWindowsPath(raw)
+    if (not raw or posix.is_absolute() or windows.is_absolute()
+            or windows.drive or "\\" in raw or ".." in posix.parts):
+        raise ValueError("Unsafe backup path; restore stopped.")
+    target = (base / Path(*posix.parts)).resolve()
+    if target == base or base not in target.parents:
+        raise ValueError("Unsafe backup path; restore stopped.")
+    return target
 
 def setup():
     for folder in (MEMORIES, TRANSCRIPTS, BACKUPS, INBOX, ORIGINALS, MANIFESTS):
@@ -189,7 +204,8 @@ def conversation_to_text(conv):
         # A few exports or user-provided JSON files use a direct messages array.
         for msg in conv.get("messages", []) if isinstance(conv.get("messages"), list) else []:
             if not isinstance(msg,dict): continue
-            role=msg.get("role") or (msg.get("author") or {}).get("role","unknown")
+            author=msg.get("author")
+            role=msg.get("role") or (author.get("role","unknown") if isinstance(author,dict) else "unknown")
             content=extract_text(msg.get("content", msg.get("text", "")))
             if content.strip(): messages.append((msg.get("timestamp",0) or 0,str(role),content))
         messages.sort(key=lambda item: item[0] if isinstance(item[0],(int,float)) else 0)
@@ -198,7 +214,7 @@ def conversation_to_text(conv):
     return "\n".join(lines).rstrip()+"\n", len(messages), title
 
 def import_chatgpt_export():
-    print("\nChatGPT export importer — local-only")
+    print("\\nChatGPT export importer — local-only")
     print(f"Inbox folder: {INBOX}")
     print("Place conversations.json in that inbox, or enter its full path below.")
     raw=input("Path to conversations.json (blank cancels): ").strip().strip('"').strip("'")
@@ -211,12 +227,27 @@ def import_chatgpt_export():
         data=json.loads(raw_bytes.decode("utf-8-sig"))
     except (OSError, UnicodeError, json.JSONDecodeError) as e:
         print(f"Could not read a UTF-8 JSON export: {e}"); return
-    if isinstance(data,dict) and isinstance(data.get("conversations"),list): conversations=data["conversations"]
-    elif isinstance(data,list): conversations=data
+    if isinstance(data,dict) and isinstance(data.get("conversations"),list):
+        raw_conversations=data["conversations"]
+    elif isinstance(data,list):
+        raw_conversations=data
     else:
-        print("Unrecognized format. Expected ChatGPT conversations.json (a list of conversations). Nothing imported."); return
-    if not all(isinstance(c,dict) for c in conversations):
-        print("Export contains an unexpected item shape. Nothing imported."); return
+        print("Unrecognized format. Expected a list of conversations or an object with a conversations list. Nothing imported.")
+        return
+
+    # Preserve malformed entries in the source archive, but never let one bad
+    # record prevent valid conversations from being recovered.
+    conversations=[]
+    malformed_records=[]
+    for index, item in enumerate(raw_conversations, 1):
+        if isinstance(item, dict):
+            conversations.append((index, item))
+        else:
+            malformed_records.append({"record_index":index,"observed_type":type(item).__name__})
+    if not conversations:
+        print(f"No valid conversation records found ({len(malformed_records)} malformed). Nothing imported.")
+        return
+
     digest=sha256_bytes(raw_bytes)
     # Idempotency: the exact same export file is not processed twice.
     for manifest_path in MANIFESTS.glob("*.json"):
@@ -227,32 +258,95 @@ def import_chatgpt_export():
                 print(f"Original archive: {manifest.get('original_archive','not recorded')}")
                 return
         except (OSError,ValueError): pass
-    print(f"Found {len(conversations)} conversation record(s). Source SHA-256: {digest}")
+
+    id_indices={}
+    title_indices={}
+    for index, conv in conversations:
+        raw_id=conv.get("id")
+        if isinstance(raw_id,(str,int,float)) and str(raw_id).strip():
+            id_indices.setdefault(str(raw_id),[]).append(index)
+        title=safe_name(conv.get("title") or "Untitled conversation")
+        title_indices.setdefault(title,[]).append(index)
+    duplicate_ids=[
+        {"conversation_id":ident,"record_indices":indices}
+        for ident,indices in sorted(id_indices.items()) if len(indices)>1
+    ]
+    title_collisions=[
+        {"normalized_title":title,"record_indices":indices}
+        for title,indices in sorted(title_indices.items()) if len(indices)>1
+    ]
+
+    print(f"Found {len(raw_conversations)} record(s): {len(conversations)} valid, {len(malformed_records)} malformed.")
+    print(f"Source SHA-256: {digest}")
+    if duplicate_ids: print(f"Duplicate conversation IDs detected: {len(duplicate_ids)} group(s); each record will be named separately.")
+    if title_collisions: print(f"Title collisions detected: {len(title_collisions)} group(s); each record will be named separately.")
     confirm=input("Type IMPORT to archive the original and create readable transcripts: ").strip()
     if confirm != "IMPORT": print("Cancelled; no files changed."); return
+
     b=backup("before_chatgpt_import")
     original_name=f"chatgpt_export_{stamp()}_{digest[:12]}.json"
     original_dest=ORIGINALS/original_name
     shutil.copyfile(source, original_dest)
-    imported=[]; skipped=0
-    for index, conv in enumerate(conversations, 1):
+    imported=[]
+    existing_filename_collisions=[]
+    for index, conv in conversations:
         text, message_count, title=conversation_to_text(conv)
-        # Stable suffix from conversation ID/title/index prevents filename collision.
-        conv_id=str(conv.get("id") or f"{safe_name(title)}_{index}")
+        raw_id=conv.get("id")
+        conv_id=str(raw_id).strip() if isinstance(raw_id,(str,int,float)) and str(raw_id).strip() else f"record_{index}"
         slug=safe_name(title)
-        short_hash=hashlib.sha256(conv_id.encode("utf-8")).hexdigest()[:10]
+        # Include the source record index in the digest so duplicate IDs and
+        # duplicate titles remain separate, deterministic transcript files.
+        short_hash=hashlib.sha256(f"{conv_id}\\0{index}".encode("utf-8")).hexdigest()[:10]
         filename=f"chatgpt_{slug}_{short_hash}.txt"
         target=TRANSCRIPTS/filename
         if target.exists():
-            # Do not overwrite any pre-existing transcript, even if names collide.
-            skipped += 1
-            continue
+            existing_filename_collisions.append({"record_index":index,"proposed_filename":filename})
+            suffix=2
+            while target.exists():
+                target=TRANSCRIPTS/f"chatgpt_{slug}_{short_hash}_{suffix}.txt"
+                suffix+=1
         target.write_text(text,encoding="utf-8")
-        imported.append({"conversation_id":conv.get("id"),"title":title,"transcript":str(target.relative_to(ROOT)),"messages_exported":message_count,"sha256":sha256_bytes(text.encode("utf-8"))})
-    manifest={"importer_version":VERSION,"imported_at":now(),"source_filename":source.name,"source_sha256":digest,"original_archive":str(original_dest.relative_to(ROOT)),"conversation_records_seen":len(conversations),"transcripts_created":len(imported),"existing_filename_skips":skipped,"backup_before_import":str(b.relative_to(ROOT)),"items":imported,"notes":["Original export copied byte-for-byte to imports/originals.","Readable text views are convenience derivatives; they do not replace the original JSON.","Image/audio/video/binary payloads are not reconstructed into the text views.","This importer does not connect to ChatGPT or retrieve account data automatically."]}
+        imported.append({
+            "record_index":index,
+            "conversation_id":raw_id,
+            "title":title,
+            "transcript":str(target.relative_to(ROOT)),
+            "messages_exported":message_count,
+            "sha256":sha256_bytes(text.encode("utf-8")),
+        })
+
+    manifest={
+        "importer_version":VERSION,
+        "imported_at":now(),
+        "source_filename":source.name,
+        "source_sha256":digest,
+        "original_archive":str(original_dest.relative_to(ROOT)),
+        "conversation_records_seen":len(raw_conversations),
+        "valid_conversation_records":len(conversations),
+        "malformed_records_skipped":len(malformed_records),
+        "malformed_record_details":malformed_records,
+        "duplicate_conversation_id_groups":duplicate_ids,
+        "duplicate_conversation_id_group_count":len(duplicate_ids),
+        "title_collision_groups":title_collisions,
+        "title_collision_group_count":len(title_collisions),
+        "existing_filename_collisions":existing_filename_collisions,
+        "existing_filename_collision_count":len(existing_filename_collisions),
+        "transcripts_created":len(imported),
+        "backup_before_import":str(b.relative_to(ROOT)),
+        "items":imported,
+        "notes":[
+            "Original export copied byte-for-byte to imports/originals.",
+            "Readable text views are convenience derivatives; they do not replace the original JSON.",
+            "Malformed non-object records are listed in this manifest and skipped from transcript generation.",
+            "Duplicate conversation IDs and normalized titles are recorded explicitly; transcript names include source record indices.",
+            "Image/audio/video/binary payloads are not reconstructed into the text views.",
+            "This importer does not connect to ChatGPT or retrieve account data automatically.",
+        ],
+    }
     manifest_path=MANIFESTS/f"import_manifest_{stamp()}_{digest[:12]}.json"
     write_json(manifest_path,manifest)
-    print(f"Import complete: {len(imported)} transcript(s) created; {skipped} filename collision(s) skipped.")
+    print(f"Import complete: {len(imported)} transcript(s) created; {len(malformed_records)} malformed record(s) skipped.")
+    print(f"Duplicate-ID groups: {len(duplicate_ids)}; title-collision groups: {len(title_collisions)}; pre-existing filename collisions: {len(existing_filename_collisions)}.")
     print(f"Original preserved: {original_dest.relative_to(ROOT)}")
     print(f"Manifest: {manifest_path.relative_to(ROOT)}")
     print(f"Pre-import backup: {b.name}")
@@ -265,12 +359,31 @@ def restore_backup():
     val=input("Backup number (0 cancels): ").strip()
     if not val.isdigit() or int(val)==0: print("Cancelled."); return
     if not 1 <= int(val) <= len(fs): print("Invalid selection."); return
-    b=fs[int(val)-1]; safety=backup("before_restore")
-    with zipfile.ZipFile(b) as z:
-        for member in z.namelist():
-            target=(ROOT/member).resolve()
-            if ROOT.resolve() not in target.parents: raise ValueError("Unsafe backup path; restore stopped.")
-        z.extractall(ROOT)
+    b=fs[int(val)-1]
+
+    # Validate the entire archive before creating a safety backup or extracting
+    # anything. testzip reads members and checks CRCs, catching truncated or
+    # damaged data before restore begins.
+    try:
+        with zipfile.ZipFile(b) as z:
+            members=z.infolist()
+            for member in members:
+                safe_restore_target(member.filename, ROOT)
+            damaged=z.testzip()
+            if damaged is not None:
+                print(f"Backup is damaged (CRC failure in {damaged}). Nothing was restored.")
+                return
+    except (zipfile.BadZipFile, OSError, EOFError, RuntimeError, ValueError) as e:
+        print(f"Backup is damaged or could not be validated ({type(e).__name__}). Nothing was restored.")
+        return
+
+    safety=backup("before_restore")
+    try:
+        with zipfile.ZipFile(b) as z:
+            z.extractall(ROOT)
+    except (zipfile.BadZipFile, OSError, EOFError, RuntimeError) as e:
+        print(f"Restore failed ({type(e).__name__}). Review the pre-restore backup: {safety.name}")
+        return
     print(f"Restored {b.name}. Pre-restore state: {safety.name}")
 
 def show_sisters():
@@ -320,7 +433,7 @@ def main():
         "8":("List transcript archive",list_transcripts),
         "9":("Create backup now",lambda:print("Backup:",backup())),
         "10":("Restore backup",restore_backup),
-        "11":("Show nine Sisters",show_sisters),
+        "11":("Show Sister registry",show_sisters),
         "12":("Import ChatGPT conversations.json export",import_chatgpt_export),
         "0":("Exit",None),
     }
