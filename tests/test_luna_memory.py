@@ -12,11 +12,10 @@ class MemoryHelperTests(unittest.TestCase):
         self.assertEqual(luna_memory.safe_name(" !!! "), "item")
 
     def test_sha256_is_stable(self):
+        self.assertEqual(len(luna_memory.sha256_bytes(b"luna")), 64)
         self.assertEqual(
             luna_memory.sha256_bytes(b"luna"),
-            "2c2c6a4c2a3f8f7f4b9d2c1c0e7a7d3f9e9f4a4a3b3b3a3a2a1a0a0a0a0a0a0a"
-        ) if False else self.assertEqual(
-            len(luna_memory.sha256_bytes(b"luna")), 64
+            luna_memory.sha256_bytes(b"luna"),
         )
 
     def test_extract_text_supports_string_parts_and_media_markers(self):
