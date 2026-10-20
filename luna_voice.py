@@ -154,11 +154,7 @@ def main():
         return 0
 
     try:
-        endpoint = configured_endpoint()
-        model_ready = bool(os.environ.get("LUNA_CHAT_ENDPOINT")) or endpoint == DEFAULT_ENDPOINT
-        # A default endpoint is only considered available after an actual request;
-        # this flag describes configuration, not a health check.
-        del model_ready
+        configured_endpoint()
     except ValueError as exc:
         speak(str(exc))
         return 2
