@@ -1,0 +1,40 @@
+name: Build LUNA OS Limbo x86 ISO
+
+on:
+  push:
+    branches:
+      - "feature/limbo-x86-bootable-iso"
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-iso:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Install ISO tooling
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes xorriso curl coreutils
+      - name: Check project Python files
+        run: |
+          python3 -m py_compile luna_memory.py luna_voice.py aurora_xlii.py aurora_xl.py
+          python3 -m unittest discover -s tests -v
+      - name: Build and verify bootable ISO
+        run: sh iso/build-bootable-iso.sh
+      - name: Upload ISO and verification files
+        uses: actions/upload-artifact@v4
+        with:
+          name: luna-os-limbo-x86-iso
+          path: |
+            build/out/LUNA-OS-Alpine-i386.iso
+            build/out/LUNA-OS-Alpine-i386.iso.sha256
+            build/out/boot-report.txt
+          if-no-files-found: error
+          retention-days: 14
