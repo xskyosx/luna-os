@@ -10,8 +10,39 @@ BASE_DIR="$BUILD_DIR/base"
 OUT_DIR="$BUILD_DIR/out"
 mkdir -p "$BASE_DIR" "$STAGE" "$OUT_DIR"
 
-INDEX_URL="https://dl-cdn.alpinelinux.org/alpine/latest-stable/releases/x86/"
+ROOT_INDEX_URL="https://dl-cdn.alpinelinux.org/alpine/"
+ROOT_INDEX="$BASE_DIR/root-index.html"
+curl --fail --location --silent --show-error "$ROOT_INDEX_URL" -o "$ROOT_INDEX"
+
+VERSION_DIR=$(python3 - "$ROOT_INDEX" <<'PY'
+import re
+import sys
+from html.parser import HTMLParser
+from pathlib import Path
+
+class Links(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.items = []
+    def handle_starttag(self, tag, attrs):
+        if tag == "a":
+            href = dict(attrs).get("href", "")
+            if re.fullmatch(r"v[0-9]+\\.[0-9]+/", href):
+                self.items.append(href)
+
+parser = Links()
+parser.feed(Path(sys.argv[1]).read_text(encoding="utf-8", errors="replace"))
+if not parser.items:
+    raise SystemExit("Could not find a stable version directory in the Alpine index.")
+def version(name):
+    return tuple(int(part) for part in re.fullmatch(r"v([0-9]+)\\.([0-9]+)/", name).groups())
+print(sorted(set(parser.items), key=version)[-1])
+PY
+)
+
+INDEX_URL="${ROOT_INDEX_URL}${VERSION_DIR}releases/x86/"
 INDEX="$BASE_DIR/index.html"
+echo "Fetching Alpine release index: $INDEX_URL"
 curl --fail --location --silent --show-error "$INDEX_URL" -o "$INDEX"
 
 ISO_NAME=$(python3 - "$INDEX" <<'PY'
@@ -27,19 +58,20 @@ class Links(HTMLParser):
     def handle_starttag(self, tag, attrs):
         if tag == "a":
             href = dict(attrs).get("href", "")
-            if re.fullmatch(r"alpine-standard-[0-9.]+-x86\.iso", href):
+            if re.fullmatch(r"alpine-standard-[0-9.]+-x86\\.iso", href):
                 self.items.append(href)
 
 parser = Links()
 parser.feed(Path(sys.argv[1]).read_text(encoding="utf-8", errors="replace"))
 if not parser.items:
-    raise SystemExit("Could not find an Alpine standard x86 ISO in the latest-stable index.")
+    raise SystemExit("Could not find an Alpine standard x86 ISO in the release index.")
 def version(name):
     return tuple(int(part) for part in re.search(r"standard-([0-9.]+)-x86", name).group(1).split("."))
 print(sorted(set(parser.items), key=version)[-1])
 PY
 )
 
+echo "Selected Alpine ISO: $ISO_NAME"
 BASE_ISO="$BASE_DIR/$ISO_NAME"
 CHECKSUMS="$BASE_DIR/sha256sums.txt"
 curl --fail --location --silent --show-error "$INDEX_URL$ISO_NAME" -o "$BASE_ISO"
