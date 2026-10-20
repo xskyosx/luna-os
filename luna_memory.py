@@ -204,7 +204,8 @@ def conversation_to_text(conv):
         # A few exports or user-provided JSON files use a direct messages array.
         for msg in conv.get("messages", []) if isinstance(conv.get("messages"), list) else []:
             if not isinstance(msg,dict): continue
-            role=msg.get("role") or (msg.get("author") or {}).get("role","unknown")
+            author=msg.get("author")
+            role=msg.get("role") or (author.get("role","unknown") if isinstance(author,dict) else "unknown")
             content=extract_text(msg.get("content", msg.get("text", "")))
             if content.strip(): messages.append((msg.get("timestamp",0) or 0,str(role),content))
         messages.sort(key=lambda item: item[0] if isinstance(item[0],(int,float)) else 0)
