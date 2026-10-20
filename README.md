@@ -40,7 +40,7 @@ See [Voice First Light setup and privacy notes](docs/VOICE_FIRST_LIGHT.md) for s
 Run the dependency-free unit tests from the repository root:
 
 ```sh
-python -m py_compile luna_memory.py tests/test_luna_memory.py
+python -m py_compile luna_memory.py luna_voice.py aurora_xlii.py aurora_xl.py tests/test_luna_memory.py tests/test_luna_voice.py tests/test_aurora_portability.py
 python -m unittest discover -s tests -v
 ```
 
