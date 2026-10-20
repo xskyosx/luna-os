@@ -101,5 +101,5 @@ report=['Aurora XLII — Counterfactual Twin','',f'Replicates: {REPS}',f'Steps: 
 for k,v in summaries.items():
     report.append(f'{k}: final={v["final_divergence"]:.6f}, peak={v["peak_divergence"]:.6f}, reconverged={v["reconverged_rate"]:.3f}, path_index={path_index[k]:.3f}')
 report += ['', 'Node 9:', out['node9']['finding'], out['node9']['warning']]
-(OUT / 'aurora_xlii_report.txt').write_text('\\n'.join(report), encoding='utf-8')
+(OUT / 'aurora_xlii_report.txt').write_text('\n'.join(report), encoding='utf-8')
 print('\n'.join(report))
