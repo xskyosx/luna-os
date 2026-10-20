@@ -56,7 +56,7 @@ def local_reply(text):
     if normalized in {"status", "estado", "are you connected", "estas conectada"}:
         return (
             "Voice input and speech output are running if the Termux API commands "
-            "are installed. Generative replies require a configured local model endpoint."
+            "are installed. Generative replies require a configured local language model endpoint."
         )
     return (
         "I heard you, but the language model is not connected yet. Configure a "
