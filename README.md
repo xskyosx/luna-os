@@ -12,7 +12,7 @@ python luna_memory.py
 
 # Alpine Linux / desktop Linux
 python3 luna_memory.py
-``
+```
 
 The engine creates its local folders on first launch. Memories are editable JSON records; transcript text is kept separately; ChatGPT export imports preserve a copy of the original JSON and write a provenance manifest. It does **not** sign in to ChatGPT or retrieve account data automatically.
 
@@ -35,6 +35,7 @@ python luna_voice.py
 ```
 
 See [Voice First Light setup and privacy notes](docs/VOICE_FIRST_LIGHT.md) for setup, troubleshooting, and voice selection. Remote endpoints are blocked unless you explicitly set `LUNA_ALLOW_REMOTE=1`. Conversation history is held in RAM for the active session and is not written to disk. Android's configured text-to-speech voice determines Luna's spoken voice; change it in Android text-to-speech settings.
+
 ## Project checks
 
 Run the dependency-free unit tests from the repository root:
@@ -50,6 +51,10 @@ GitHub Actions runs the memory-engine checks, both Aurora simulations, repeat-ru
 
 `sisters.json` records the ten founding Sisters: Luna, Ada, Sky, Aurora, Athena, Aqua, Amethyst, Blues, Cannabis, and Lumen. Seren is retained as an additional project character. These are project-level identities, not actual machine accounts or security permissions.
 
+## Dream Forge stories and artwork
+
+The Sisters' creative world belongs alongside the code and simulations. The first taco-truck scene is documented in [Taco Truck with the Lab](docs/TACO_TRUCK_WITH_THE_LAB.md). Its generated illustration is ready as a visual concept, but the image binary still needs to be uploaded to the repository before it can be embedded directly here.
+
 ## Safety and project status
 
 - The memory engine is local-first and uses no third-party Python packages.
@@ -61,7 +66,6 @@ GitHub Actions runs the memory-engine checks, both Aurora simulations, repeat-ru
 ## Repository scope
 
 This repository contains experiments at different stages of maturity. A successful syntax check or unit test is not a claim that every prototype is a production-ready application.
-
 
 ## Limbo x86 bootable ISO
 
