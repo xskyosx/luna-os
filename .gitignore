@@ -20,3 +20,7 @@ __pycache__/
 !/imports/originals/.gitkeep
 /imports/manifests/*
 !/imports/manifests/.gitkeep
+
+# Private profile vaults must never be committed.
+*.vault
+*.vault.tmp
