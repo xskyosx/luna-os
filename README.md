@@ -36,6 +36,10 @@ python luna_voice.py
 
 See [Voice First Light setup and privacy notes](docs/VOICE_FIRST_LIGHT.md) for setup, troubleshooting, and voice selection. Remote endpoints are blocked unless you explicitly set `LUNA_ALLOW_REMOTE=1`. Conversation history is held in RAM for the active session and is not written to disk. Android's configured text-to-speech voice determines Luna's spoken voice; change it in Android text-to-speech settings.
 
+## Sisters' Palace dashboard
+
+A responsive, dependency-free Palace home screen is available at [`palace/index.html`](palace/index.html). Open it in a browser to explore all ten founding Sisters and use the optional Respect & Uplift meter. Check-ins are stored separately in that browser's local storage; this page does not sync with the Python JSONL module. See the [Respect & Uplift guide](docs/RESPECT_AND_UPLIFT.md) for the Python tool's local storage and privacy details.
+
 ## Respect & Uplift check-in
 
 An optional, local-only reflection tool records voluntary 1–5 self-ratings before and after an interaction. It does not analyze conversations or claim to measure physical energy or the feelings of software characters. Run `python3 luna_uplift.py`; see [Respect & Uplift privacy and usage](docs/RESPECT_AND_UPLIFT.md).
