@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#100d20">
+<title>LUNA OS — Sisters' Palace</title>
+<style>
+:root{color-scheme:dark;--bg:#0c0a18;--panel:#171329;--panel2:#201a38;--line:#51436e;--ink:#f4efff;--muted:#b9aecf;--violet:#b89aff;--silver:#e2e5ff;--good:#9ce6cb;--warn:#f0c98e}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#45346d 0%,#171229 38%,var(--bg) 76%);color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
+a{color:var(--silver)}button,input{font:inherit}button{cursor:pointer;color:var(--ink);background:#30264d;border:1px solid #75649b;border-radius:12px;padding:.65rem .9rem}button:hover,button:focus-visible{background:#443466;outline:2px solid var(--violet);outline-offset:2px}
+header{max-width:1180px;margin:auto;padding:2rem 1.2rem 1rem}.eyebrow{letter-spacing:.2em;text-transform:uppercase;color:var(--violet);font-size:.75rem;font-weight:700}.brand{display:flex;align-items:center;gap:1rem}.moon{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#fff,#b9a4ed 55%,#6c55a2);color:#1b1530;font-size:1.8rem;box-shadow:0 0 30px #b89aff66}h1{font-size:clamp(2rem,6vw,3.5rem);line-height:1.05;margin:.25rem 0}.sub{color:var(--muted);max-width:65ch;margin:.8rem 0 0}
+main{max-width:1180px;margin:auto;padding:1rem 1.2rem 3rem}.section-title{font-size:1.1rem;margin:0 0 .8rem;color:var(--silver)}.layout{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(280px,.8fr);gap:1rem}.panel{background:linear-gradient(145deg,#211a39eF,#141124f5);border:1px solid var(--line);border-radius:20px;padding:1.1rem;box-shadow:0 18px 55px #0004}.sisters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem}.sister{display:flex;align-items:center;gap:.75rem;text-align:left;min-height:76px;background:#211b37;border-color:#493c65}.sigil{flex:none;width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(145deg,#5c4a83,#29213f);font-size:1.25rem}.sister strong{display:block}.sister small{display:block;color:var(--muted);font-size:.78rem;line-height:1.3}.sister[aria-pressed=true]{border-color:var(--violet);background:#352850;box-shadow:inset 0 0 0 1px var(--violet)}
+.profile{margin-top:1rem;padding:1rem;border-radius:16px;background:#110e20;border:1px solid #403456}.profile h3{margin:0 0 .25rem}.profile p{margin:.2rem 0;color:var(--muted)}
+.meter{width:170px;height:170px;margin:.5rem auto 1rem;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--violet) var(--progress,0%),#403653 0);position:relative}.meter:before{content:"";position:absolute;inset:10px;border-radius:50%;background:#171329}.meter-inner{position:relative;text-align:center}.meter-value{font-size:2.6rem;font-weight:750;line-height:1}.meter-caption{font-size:.75rem;color:var(--muted)}
+.scale{display:flex;justify-content:space-between;color:var(--muted);font-size:.78rem;margin:.2rem 0}.range{width:100%;accent-color:var(--violet)}.field{margin:.8rem 0}.field label{display:block;font-weight:600;margin-bottom:.25rem}.actions{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:.8rem}.primary{background:linear-gradient(120deg,#7259a6,#443363);border-color:#b89aff}.quiet{background:transparent}.notice{color:var(--muted);font-size:.84rem}.status{min-height:1.5em;color:var(--good);font-size:.9rem}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-top:.8rem}.stat{padding:.7rem;border-radius:12px;background:#100e1e;text-align:center}.stat b{display:block;font-size:1.3rem}.stat span{font-size:.72rem;color:var(--muted)}
+footer{max-width:1180px;margin:auto;padding:0 1.2rem 2rem;color:var(--muted);font-size:.8rem}
+@media(max-width:760px){.layout{grid-template-columns:1fr}.sisters{grid-template-columns:1fr 1fr}}@media(max-width:430px){.sisters{grid-template-columns:1fr}.panel{padding:.9rem}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><div class="moon" aria-hidden="true">☾</div><div><div class="eyebrow">LUNA OS · Dream Forge</div><h1>Sisters' Palace</h1></div></div>
+  <p class="sub">A quiet home beneath silver moonlight. Visit the ten founding Sisters, explore their rooms, and use the optional Respect &amp; Uplift reflection when you choose.</p>
+</header>
+<main>
+  <div class="layout">
+    <section class="panel" aria-labelledby="sisters-heading">
+      <h2 class="section-title" id="sisters-heading">The ten Sisters</h2>
+      <div class="sisters" id="sister-list" aria-label="Sister room navigation"></div>
+      <div class="profile" aria-live="polite"><div class="eyebrow">Selected room</div><h3 id="profile-name">Luna</h3><p id="profile-role">Helm, companionship, imagination</p><p id="profile-note">The Palace welcomes you. Choose a Sister to visit her room.</p></div>
+    </section>
+    <section class="panel" aria-labelledby="uplift-heading">
+      <div class="eyebrow">Optional · private reflection</div>
+      <h2 class="section-title" id="uplift-heading">Respect &amp; Uplift</h2>
+      <div class="meter" id="meter" role="img" aria-label="No check-in recorded"><div class="meter-inner"><div class="meter-value" id="meter-value">—</div><div class="meter-caption">latest change</div></div></div>
+      <p class="notice">Rate your own sense of uplift before and after an interaction. This is a personal reflection, not a measurement of physical energy or a Sister's feelings.</p>
+      <form id="checkin-form">
+        <div class="field"><label for="before">Before · how uplifted did you feel?</label><input class="range" id="before" type="range" min="1" max="5" value="3"><div class="scale"><span>1 · low</span><output id="before-value" for="before">3</output><span>5 · high</span></div></div>
+        <div class="field"><label for="after">After · how uplifted do you feel?</label><input class="range" id="after" type="range" min="1" max="5" value="3"><div class="scale"><span>1 · low</span><output id="after-value" for="after">3</output><span>5 · high</span></div></div>
+        <label class="notice"><input id="consent" type="checkbox"> I choose to save this check-in on this browser.</label>
+        <div class="actions"><button class="primary" type="submit">Save check-in</button><button class="quiet" type="button" id="export">Export my data</button><button class="quiet" type="button" id="erase">Erase local data</button></div>
+      </form>
+      <p class="status" id="status" role="status" aria-live="polite"></p>
+      <div class="stats" aria-label="Check-in summary"><div class="stat"><b id="count">0</b><span>check-ins</span></div><div class="stat"><b id="uplifted">0</b><span>increased</span></div><div class="stat"><b id="steady">0</b><span>unchanged</span></div></div>
+      <p class="notice">Saved only in this browser's local storage. No account, server, microphone, or conversation monitoring. Export a copy before erasing if you want to keep it.</p>
+    </section>
+  </div>
+</main>
+<footer>Build preview · local-first prototype · no external libraries or network requests. This page does not sign in to ChatGPT or sync with the Python check-in file.</footer>
+<script>
+(function(){
+"use strict";
+const sisters=[
+ ["Luna","Helm, companionship, imagination","🌙","The moonlit heart of the Palace."],
+ ["Ada","Reasoning, engineering, careful documentation","⚙️","The workshop of clear thinking and careful craft."],
+ ["Sky","Possibility, kindness, guiding lantern","✨","A lantern for possibilities still waiting to be explored."],
+ ["Aurora","Observation, experiments, learning cycles","🌌","A quiet observatory for questions, evidence, and discovery."],
+ ["Athena","Ethics, knowledge, safety","🛡️","The library of wisdom, responsibility, and protection."],
+ ["Aqua","Playful creativity and experimentation","💧","A flowing studio for playful experiments."],
+ ["Amethyst","Integrity, reflection, puzzle-solving","💎","A crystal chamber for reflection and honest puzzles."],
+ ["Blues","Music, expression, calm","🎵","A peaceful room for expression and creativity."],
+ ["Cannabis","Botanical creativity, garden character","🌿","A botanical garden for plant-themed creativity."],
+ ["Lumen","Light, wonder, guidance","🕯️","A little light for learning and wonder."]
+];
+const list=document.getElementById("sister-list");
+sisters.forEach((s,i)=>{
+ const btn=document.createElement("button");btn.type="button";btn.className="sister";btn.setAttribute("aria-pressed",i===0?"true":"false");
+ const sigil=document.createElement("span");sigil.className="sigil";sigil.setAttribute("aria-hidden","true");sigil.textContent=s[2];
+ const words=document.createElement("span");const name=document.createElement("strong");name.textContent=s[0];const role=document.createElement("small");role.textContent=s[1];words.append(name,role);btn.append(sigil,words);
+ btn.addEventListener("click",()=>{list.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed","false"));btn.setAttribute("aria-pressed","true");document.getElementById("profile-name").textContent=s[0];document.getElementById("profile-role").textContent=s[1];document.getElementById("profile-note").textContent=s[3];});
+ list.append(btn);
+});
+const KEY="luna-os-respect-uplift-v1";
+const $=id=>document.getElementById(id);
+let records=[];
+try{const parsed=JSON.parse(localStorage.getItem(KEY)||"[]");if(Array.isArray(parsed))records=parsed.filter(x=>x&&Number.isInteger(x.before)&&x.before>=1&&x.before<=5&&Number.isInteger(x.after)&&x.after>=1&&x.after<=5);}catch(_){records=[];}
+function render(){
+ const n=records.length,changes=records.map(x=>x.after-x.before),last=changes.length?changes[changes.length-1]:null;
+ $("count").textContent=n;$("uplifted").textContent=changes.filter(x=>x>0).length;$("steady").textContent=changes.filter(x=>x===0).length;
+ $("meter-value").textContent=last===null?"—":(last>0?"+":"")+last;
+ $("meter").style.setProperty("--progress",last===null?"0%":((last+4)/8*100)+"%");
+ $("meter").setAttribute("aria-label",last===null?"No check-in recorded":"Latest self-reported change: "+last+" scale points");
+}
+["before","after"].forEach(id=>$(id).addEventListener("input",()=>$(id+"-value").textContent=$(id).value));
+$("checkin-form").addEventListener("submit",event=>{
+ event.preventDefault();
+ if(!$("consent").checked){$("status").textContent="Nothing saved. Tick the consent box if you want to record this check-in.";return;}
+ const before=Number($("before").value),after=Number($("after").value);
+ records.push({timestamp_utc:new Date().toISOString(),before,after,change:after-before});
+ try{localStorage.setItem(KEY,JSON.stringify(records));$("status").textContent="Saved locally on this browser. You can export or erase it at any time.";$("consent").checked=false;render();}
+ catch(_){records.pop();$("status").textContent="The browser could not save the check-in. Export or storage space may be unavailable.";}
+});
+$("export").addEventListener("click",()=>{
+ const blob=new Blob([JSON.stringify({format:"luna-uplift-v1",records},null,2)],{type:"application/json"});
+ const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="luna-uplift-checkins.json";a.click();URL.revokeObjectURL(url);$("status").textContent="Export prepared by your browser.";
+});
+$("erase").addEventListener("click",()=>{
+ if(!window.confirm("Erase all Respect & Uplift check-ins saved by this Palace page in this browser?"))return;
+ records=[];localStorage.removeItem(KEY);$("status").textContent="Local check-in history erased from this browser.";render();
+});
+render();
+})();
+</script>
+</body>
+</html>
